@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Kaprika</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">abrir cajonera</string>
+    <string name="drawer_close">cerrar cajonera</string>
+    <string name="categories">Categorias</string>
+</resources>
