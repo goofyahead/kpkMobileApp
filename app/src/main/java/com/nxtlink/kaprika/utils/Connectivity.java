@@ -1,5 +1,10 @@
 package com.nxtlink.kaprika.utils;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.nxtlink.kaprika.base.KaprikaApplication;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,14 +15,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.nxtlink.kaprika.base.KaprikaApplication;
-
 public class Connectivity {
 
 	private static final String DEBUG_TAG = Connectivity.class.getName();
+	private static final String TAG = Connectivity.class.getName();
 
 	public static String getDataFromUrl(String myurl) throws IOException {
 		InputStream is = null;
@@ -57,12 +58,13 @@ public class Connectivity {
 		try {
 			int count;
 			URL url = new URL(myUrl);
+			Log.d(TAG, "DOWNLOADING FROM " + myUrl);
 			URLConnection conection = url.openConnection();
 			conection.connect();
 			// input stream to read file - with 8k buffer
 			input = new BufferedInputStream(url.openStream(), 8192);
 			// Output stream to write file
-			output = KaprikaApplication.getAppContext().openFileOutput(fileName, Context.MODE_WORLD_READABLE);
+			output = KaprikaApplication.getAppContext().openFileOutput(fileName, Context.MODE_PRIVATE);
 			byte data[] = new byte[1024];
 			while ((count = input.read(data)) != -1) {
 				output.write(data, 0, count);

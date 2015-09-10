@@ -14,37 +14,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
+import android.widget.ListView;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.DishCursorAdapter;
 import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.db.DbHelper;
+import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.providers.DishProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class DishGridViewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DishListViewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-	@InjectView(R.id.dishGridView) GridView dishGrid;
+	@InjectView(R.id.dishGridView)
+	ListView dishListView;
 	private OnDishSelectedListener mCallback;
+    private AddToCart mCartCallback;
 	private DishCursorAdapter dishCursorAdapter;
 	private String categoryId;
-	public static final String TAG = DishGridViewFragment.class.getName();
+	public static final String TAG = DishListViewFragment.class.getName();
 	private static final int URL_LOADER = 0;
 	private static final String CATEGORY_ID = "category_id";
 
 	// Container Activity must implement this interface
 	public interface OnDishSelectedListener {
-		public void onDishSelected(String id);
+		void onDishSelected(String id);
 	}
 	
-	public static DishGridViewFragment newInstance(String dishId) {
-		DishGridViewFragment myFragment = new DishGridViewFragment();
-
+	public static DishListViewFragment newInstance(String categoryId) {
+		DishListViewFragment myFragment = new DishListViewFragment();
 		Bundle args = new Bundle();
-		args.putString(CATEGORY_ID, dishId);
+		args.putString(CATEGORY_ID, categoryId);
 		myFragment.setArguments(args);
 		return myFragment;
 	}
@@ -52,8 +54,8 @@ public class DishGridViewFragment extends Fragment implements LoaderManager.Load
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		dishCursorAdapter = new DishCursorAdapter(getActivity());
-		dishGrid.setAdapter(dishCursorAdapter);
+		dishCursorAdapter = new DishCursorAdapter(getActivity(), (AddToCart) getActivity());
+		dishListView.setAdapter(dishCursorAdapter);
 		getLoaderManager().initLoader(URL_LOADER, null, this);
 	}
 
@@ -68,6 +70,13 @@ public class DishGridViewFragment extends Fragment implements LoaderManager.Load
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnHeadlineSelectedListener");
 		}
+
+		try {
+            mCartCallback = (AddToCart) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement AddToCart");
+		}
 	}
 
 	@Override
@@ -81,14 +90,16 @@ public class DishGridViewFragment extends Fragment implements LoaderManager.Load
 	@Override
 	public void onResume() {
 		super.onResume();
-		dishGrid.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View arg1,
-					int position, long arg3) {
-				String dishId = (String) adapter.getItemAtPosition(position);
-				mCallback.onDishSelected(dishId);
-			}
-		});
+		dishListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View arg1,
+                                    int position, long arg3) {
+                String dishId = (String) adapter.getItemAtPosition(position);
+                mCallback.onDishSelected(dishId);
+            }
+        });
+
+        Log.d(TAG, "COUNT IS WHEN LIST IS LOADED: " + getFragmentManager().getBackStackEntryCount());
 	}
 
 	@Override

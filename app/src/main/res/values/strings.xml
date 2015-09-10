@@ -6,4 +6,18 @@
     <string name="drawer_open">abrir cajonera</string>
     <string name="drawer_close">cerrar cajonera</string>
     <string name="categories">Categorias</string>
+    <string name="dish_description">Un delicioso plato de tonalidades suaves y fuerte sabor a pino</string>
+    <string name="dish_image">Dish image</string>
+    <string name="favourite">Favourite</string>
+    <string name="delivery">Add to cart</string>
+    <string name="cart">Order</string>
+    <string name="dialog_quantity_accept">OK</string>
+    <string name="dialog_quantity_title">Cuantos quieres?</string>
+    <string name="dialog_quantity_cancel">Cancelar</string>
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="checkout_buy">Comprar</string>
+    <string name="checkout_discard">Volver</string>
+    <string name="checkout_total_amout">Total a pagar:</string>
+    <string name="your_purchase">Tu compra</string>
+
 </resources>

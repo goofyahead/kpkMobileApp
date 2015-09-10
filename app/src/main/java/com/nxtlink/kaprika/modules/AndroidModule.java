@@ -4,15 +4,19 @@ package com.nxtlink.kaprika.modules;
  * Created by goofyahead on 9/8/14.
  */
 
+import android.app.DownloadManager;
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.nxtlink.kaprika.activities.CheckoutActivity;
 import com.nxtlink.kaprika.activities.MainActivity;
-import com.nxtlink.kaprika.db.DataHelper;
-import com.nxtlink.kaprika.interfaces.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.Credentials;
+import com.nxtlink.kaprika.db.DataHelper;
+import com.nxtlink.kaprika.fragments.DishListViewFragment;
+import com.nxtlink.kaprika.api.KaprikaApiInterface;
+import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 import com.nxtlink.kaprika.volley.BitmapLruCache;
 
@@ -23,7 +27,11 @@ import dagger.Provides;
 import retrofit.RestAdapter;
 
 @Module(injects = {
-        MainActivity.class
+        MainActivity.class,
+        DishListViewFragment.class,
+        DataHelper.class,
+        DishViewFragment.class,
+        CheckoutActivity.class
 },
         library = true)
 public class AndroidModule {
@@ -65,6 +73,12 @@ public class AndroidModule {
     @Singleton
     DataHelper provideDataHelper () {
         return new DataHelper(mContext);
+    }
+
+    @Provides
+    @Singleton
+    DownloadManager provideDownloadManager() {
+        return (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
     @Provides

@@ -6,12 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 import com.nxtlink.kaprika.db.DbHelper;
 
 public class DishProvider extends ContentProvider {
+	private static final String TAG = DishProvider.class.getName();
 	private DbHelper openHelper;
-	public static final String AUTHORITY = "ourContentProviderAuthorities";
+	public static final String AUTHORITY = "com.nxtlink.kaprika.dishProvider";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
 	@Override
@@ -45,6 +47,7 @@ public class DishProvider extends ContentProvider {
 		String table = getTableName(uri);
 		SQLiteDatabase database = openHelper.getReadableDatabase();
 		if (table.equals(DbHelper.TABLE_CATEGORIES_JOIN_DISHES)){
+			Log.d(TAG, "executing specific JOIN query url");
 			 SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 		        String tables = String.format("%s INNER JOIN %s ON (%s.%s = %s.%s)", DbHelper.TABLE_NAME_DISHES,
 		                DbHelper.TABLE_NAME_RELATED_CATEGORIES, DbHelper.TABLE_NAME_DISHES, DbHelper.DISH_ID,
@@ -53,6 +56,7 @@ public class DishProvider extends ContentProvider {
 		        String sql = builder.buildQuery(null, selection, null, null, DbHelper.DISH_NAME + " desc", null);
 		        return database.rawQuery(sql, selectionArgs);
 		} else {
+			Log.d(TAG, "executing normal query url");
 			Cursor cursor = database.query(table, projection, selection, selectionArgs, null, null, sortOrder);
 			return cursor;
 		}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:clickable="true"
+    style="@android:style/Widget.ActionButton">
+
+    <ImageView
+        android:id="@+id/hotlist_bell"
+        android:src="@drawable/custom_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="2dp"
+        android:contentDescription="bell"
+        />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cart_count"
+        android:layout_width="wrap_content"
+        android:minWidth="16sp"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:textColor="@color/nowfie_black"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="2"
+        android:layout_alignTop="@id/hotlist_bell"
+        android:layout_alignParentLeft="@id/hotlist_bell"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:padding="2dp"
+        android:background="@drawable/round_square"/>
+</RelativeLayout>

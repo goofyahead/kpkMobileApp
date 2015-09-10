@@ -2,16 +2,16 @@ package com.nxtlink.kaprika.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.db.DbHelper;
 
-public class CategoryCursorAdapter extends CursorAdapter{
+public class CategoryCursorAdapter extends CursorAdapter {
 	private LayoutInflater inflater;
 	
 	public CategoryCursorAdapter(Context context) {

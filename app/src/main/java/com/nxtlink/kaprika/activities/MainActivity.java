@@ -1,14 +1,18 @@
 package com.nxtlink.kaprika.activities;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.app.DownloadManager;
 import android.app.FragmentTransaction;
-import android.support.v4.app.FragmentActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +23,22 @@ import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.MenuAdapter;
+import com.nxtlink.kaprika.base.Credentials;
 import com.nxtlink.kaprika.base.KaprikaApplication;
-import com.nxtlink.kaprika.interfaces.KaprikaApiInterface;
+import com.nxtlink.kaprika.db.DataHelper;
+import com.nxtlink.kaprika.dialogs.ProgressDialogFragment;
+import com.nxtlink.kaprika.dialogs.SelectQuantityDialog;
+import com.nxtlink.kaprika.fragments.DishListViewFragment;
+import com.nxtlink.kaprika.api.KaprikaApiInterface;
+import com.nxtlink.kaprika.fragments.DishViewFragment;
+import com.nxtlink.kaprika.interfaces.AddToCart;
+import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
+import com.nxtlink.kaprika.models.AccessToken;
+import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.models.Category;
+import com.nxtlink.kaprika.models.Dish;
 import com.nxtlink.kaprika.models.MenuCategory;
+import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 import com.nxtlink.kaprika.utils.Utils;
 
 import java.util.ArrayList;
@@ -36,12 +52,17 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Callback<Integer>, DishListViewFragment.OnDishSelectedListener, AddToCart, SelectQuantityInterface {
 
     private static String TAG = MainActivity.class.getName();
 
     @Inject
     KaprikaApiInterface api;
+    @Inject
+    KaprikaSharedPrefs prefs;
+    @Inject
+    DataHelper dataHelper;
+
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -56,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<MenuCategory> options = new ArrayList<>();
     private List<Category> mCategories;
+    private ProgressDialogFragment progress;
+    private BroadcastReceiver receiver;
+    private TextView orderCount;
+    private View cartView;
+    private Dish currentDishSelected;
+    private Cart currentCart = new Cart();
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +93,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
 
+        api.getLastUpdate(this);
         versionApp.setText(Utils.getPrettyAppVersion(this));
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -114,47 +141,69 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                String categoryId = mCategories.get(position).getId();
 
-                // all calls to the list are the elements and must be scrollable user opts should be a button
-                // call listDishes with the id retrieved from position
-                mCategories.get(position).getId();
-//                switch (position) {
-//                    case 0:
-//                        mTitle = getResources().getString(R.string.create_nowfie);
-//                        TakeSelfie selfieFragment = TakeSelfie.getInstance(null);
-//                        ft.replace(R.id.fragment_holder, selfieFragment);
-//                        ft.commit();
-//                        break;
-//                    case 1:
-//                        mTitle = getResources().getString(R.string.my_active_nowfies);
-//                        MyNowfies nowfiesListOpen = MyNowfies.getInstance(true);
-//                        ft.replace(R.id.fragment_holder, nowfiesListOpen);
-//                        ft.commit();
-//                        break;
-//                    case 2:
-//                        mTitle = getResources().getString(R.string.my_nowfies);
-//                        MyNowfies nowfiesList = MyNowfies.getInstance(false);
-//                        ft.replace(R.id.fragment_holder, nowfiesList);
-//                        ft.commit();
-//                        break;
-//                }
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                DishListViewFragment dlView = DishListViewFragment.newInstance(categoryId);
+                ft.replace(R.id.fragment_holder, dlView);
+                ft.commit();
 
                 drawer.setItemChecked(position, true);
                 drawerLayout.closeDrawer(drawerHolder);
+
+                mTitle = mCategories.get(position).getName();
+                getSupportActionBar().setTitle(mTitle);
             }
         });
+
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                    Log.d(TAG, "A file was downloaded");
+                    progress.incrementProgressBy(1);
+                }
+            }
+        };
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        cartView = menu.findItem(R.id.action_cart).getActionView();
+        orderCount = (TextView) cartView.findViewById(R.id.cart_count);
+
+        updateCartCounter();
+
+        cartView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "clicked in click handler");
+                Intent checkout = new Intent(MainActivity.this, CheckoutActivity.class);
+                checkout.putExtra(CheckoutActivity.PAYLOAD, currentCart);
+                checkout.putExtra(CheckoutActivity.TOKEN, token);
+                startActivityForResult(checkout, 0);
+            }
+        });
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        currentCart = (Cart) data.getSerializableExtra(CheckoutActivity.PAYLOAD);
+        updateCartCounter();
     }
 
     @Override
@@ -163,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        Log.d(TAG, "Something clicked in action bar " + id);
 
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
@@ -180,5 +231,119 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void success(final Integer timeStampFromServer, Response response) {
+        Log.d(TAG, "last update was in " + timeStampFromServer);
+        if (prefs.getLastUpdate() < timeStampFromServer) {
+            progress = new ProgressDialogFragment();
+            progress.show(getFragmentManager(), "me");
+
+            Log.d(TAG, "Must update dB");
+            dataHelper.deleteDB();
+
+            api.getCurrentMenu(new Callback<List<Dish>>() {
+                @Override
+                public void success(List<Dish> dishes, Response response) {
+                    Log.d(TAG, "saving dishes in db " + dishes.size());
+                    progress.setMax(dishes.size() * 2);
+
+                    for (Dish dish : dishes) {
+                        dataHelper.saveDish(dish);
+                        Log.d(TAG, "Dishes saved, getting images");
+                    }
+
+                    Log.d(TAG, "done mark as updated now");
+                    prefs.setLastUpdated(timeStampFromServer);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d(TAG, "Error " + error.getMessage());
+                }
+            });
+        } else {
+            Log.d(TAG, "DB is up to date");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+        api.getTokenClient(new Callback<AccessToken>() {
+            @Override
+            public void success(AccessToken accessToken, Response response) {
+                token = accessToken.getAccessToken();
+                Log.d(TAG, "Token retrieved " + token);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "ERROR GETTING TOKEN FOR TS "+ error.getMessage());
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+
+    }
+
+    @Override
+    public void onDishSelected(String id) {
+        Log.d(TAG, "dish selected: " + id);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DishViewFragment dlView = DishViewFragment.newInstance(id);
+        ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
+        ft.add(R.id.fragment_holder, dlView);
+        ft.addToBackStack(DishViewFragment.class.getName());
+        ft.commit();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0){
+            getFragmentManager().popBackStack();
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onDishAdded(Dish dish) {
+        Log.d(TAG, "dish added " + dish.getName());
+        currentDishSelected = dish;
+        new SelectQuantityDialog().show(getFragmentManager(), "qtty");
+    }
+
+    private void updateCartCounter() {
+        if (currentCart.getItemsCount() == 0) {
+            orderCount.setVisibility(View.INVISIBLE);
+        } else {
+            orderCount.setVisibility(View.VISIBLE);
+            orderCount.setText("" + currentCart.getItemsCount());
+        }
+    }
+
+    @Override
+    public void quantitySelected(int quantity) {
+        if (quantity == 0) {
+            currentDishSelected = null;
+        } else {
+            //add to order not just the number
+            currentCart.addItemToCart(currentDishSelected, quantity);
+            updateCartCounter();
+        }
     }
 }

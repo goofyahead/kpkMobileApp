@@ -56,6 +56,7 @@ public class MenuAdapter extends BaseAdapter {
         }
 
         holder.name.setText(categories.get(position).getCategoryName());
+
         if (categories.get(position).getResourceImg() != 0){
             holder.image.setImageResource(categories.get(position).getResourceImg());
         }

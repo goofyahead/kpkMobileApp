@@ -18,7 +18,7 @@
     <!-- The navigation drawer -->
     <RelativeLayout
         android:clickable="true"
-        android:background="@color/background_material_dark"
+        android:background="@color/nowfie_gray"
         android:id="@+id/left_drawer"
         android:layout_gravity="start"
         android:layout_width="240dp"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
-            android:divider="@color/accent_material_light"
+            android:divider="@color/nowfie_gray"
             android:dividerHeight="1dp"
             />
 

@@ -1,6 +1,9 @@
 package com.nxtlink.kaprika.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Ingredient {
+	@SerializedName("_id")
 	private String id;
 	private String name;
 	private String description;

@@ -1,19 +1,70 @@
 package com.nxtlink.kaprika.db;
 
+import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.nxtlink.kaprika.models.*;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
+
+import com.nxtlink.kaprika.base.Credentials;
+import com.nxtlink.kaprika.base.KaprikaApplication;
+import com.nxtlink.kaprika.models.Category;
+import com.nxtlink.kaprika.models.Dish;
+import com.nxtlink.kaprika.models.Ingredient;
+import com.nxtlink.kaprika.models.Recommendation;
+import com.nxtlink.kaprika.models.Tag;
+
+import java.io.File;
+import java.util.LinkedList;
+
+import javax.inject.Inject;
 
 public class DataHelper {
 
 	private static final String TAG = DataHelper.class.getName();
 	private DbHelper openHelper;
+    private Context mContext;
+    @Inject
+    DownloadManager dm;
 
 
-	public DataHelper(Context context) {
-		openHelper = new DbHelper(context);
+    public DataHelper(Context context) {
+        mContext = context;
+        ((KaprikaApplication) context.getApplicationContext()).inject(this);
+        openHelper = new DbHelper(context);
+	}
+
+	public void deleteDB () {
+		openHelper.deleteDB();
+
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + Credentials.FOLDER_KPK_PICTURES);
+        File [] pictureFiles = path.listFiles();
+        LinkedList<String> filesPath = new LinkedList<>();
+
+        if (pictureFiles != null) {
+            for (int x = 0; x < pictureFiles.length; x++) {
+                Log.d(TAG, "file deleted: " + pictureFiles[x].getName());
+                pictureFiles[x].delete();
+                filesPath.add(pictureFiles[x].getAbsolutePath());
+            }
+        }
+
+        File pathVideos = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + Credentials.FOLDER_KPK_VIDEOS);
+        File [] videoFiles = pathVideos.listFiles();
+
+        if (videoFiles != null) {
+            for (int x = 0; x < videoFiles.length; x++){
+                Log.d(TAG, "file deleted: " + videoFiles[x].getName());
+                videoFiles[x].delete();
+                filesPath.add(videoFiles[x].getAbsolutePath());
+            }
+        }
+
+        MediaScannerConnection.scanFile(mContext, filesPath.toArray(new String[filesPath.size()]), null, null);
 	}
 
 	public void saveDish(Dish dish) {
@@ -28,6 +79,18 @@ public class DataHelper {
 		values.put(DbHelper.DISH_DEMO, dish.isDemo());
 		db.insert(DbHelper.TABLE_NAME_DISHES, null, values);
 		db.close();
+
+        DownloadManager.Request requestPicture = new DownloadManager.Request(Uri.parse(Credentials.SERVER_IP + Credentials.IMAGES_PATH + dish.getImage()));
+        requestPicture.setVisibleInDownloadsUi(false);
+        requestPicture.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, Credentials.FOLDER_KPK_PICTURES + dish.getImage());
+        requestPicture.allowScanningByMediaScanner();
+        dm.enqueue(requestPicture);
+
+        DownloadManager.Request requestVideo = new DownloadManager.Request(Uri.parse(Credentials.SERVER_IP + Credentials.VIDEOS_PATH + dish.getVideo()));
+        requestVideo.setVisibleInDownloadsUi(false);
+        requestVideo.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, Credentials.FOLDER_KPK_VIDEOS + dish.getVideo());
+        requestVideo.allowScanningByMediaScanner();
+        dm.enqueue(requestVideo);
 
         /// save recommendations
 		for (Recommendation recommendation : dish.getRecommendations()){

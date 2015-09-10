@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@color/nowfie_lighter_gray"
+            android:id="@+id/dish_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nowfie_whitee"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/nowfie_type_image">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/section"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/nowfie_light_purple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Polaroid"
+                android:id="@+id/dish_name"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"/>
+            <TextView
+                style="@style/section"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/nowfie_light_purple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="7,95€"
+                android:id="@+id/dish_price"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+
+        <TextView
+            style="@style/sub_body"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/nowfie_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/dish_description"
+            android:id="@+id/dish_description"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <TextView
+                style="@style/sub_bold"
+                android:padding="3dp"
+                android:id="@+id/add_to_cart"
+                android:text="@string/delivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                style="@style/sub_bold"
+                android:id="@+id/favourite"
+                android:padding="3dp"
+                android:textColor="@color/nowfie_purple"
+                android:layout_marginLeft="20dp"
+                android:text="@string/favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:background="@drawable/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+    <View
+        android:background="@color/nowfie_lighter_gray"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"/>
+
+</LinearLayout>

@@ -14,12 +14,20 @@ public class KaprikaSharedPrefs {
     private static final String SECRET = "SECRET";
     private static final String REGISTERED_VERSION = "REGISTERED_VERSION";
     private static final String IS_FIRST_TIME = "IS_FIRST_TIME";
+    private static final String LAST_UPDATED = "LAST_UPDATE";
     private final SharedPreferences prefs;
 
     public KaprikaSharedPrefs(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    public int getLastUpdate() {
+        return prefs.getInt(LAST_UPDATED, 0);
+    }
+
+    public void setLastUpdated(int timeStamp) {
+        prefs.edit().putInt(LAST_UPDATED, timeStamp).commit();
+    }
     public boolean isFirstTime() {
         return prefs.getBoolean(IS_FIRST_TIME, true);
     }
