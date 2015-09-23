@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
-import com.nxtlink.kaprika.models.Dish;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

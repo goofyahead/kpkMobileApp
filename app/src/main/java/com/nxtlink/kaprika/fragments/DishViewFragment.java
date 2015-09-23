@@ -1,7 +1,6 @@
 package com.nxtlink.kaprika.fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.VideoView;
 
 import com.nxtlink.kaprika.R;

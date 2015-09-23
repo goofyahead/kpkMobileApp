@@ -3,10 +3,7 @@ package com.nxtlink.kaprika.models;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Set;
 
 /**
  * Created by goofyahead on 3/09/15.

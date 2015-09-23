@@ -1,17 +1,15 @@
 package com.nxtlink.kaprika.api;
 
 import com.nxtlink.kaprika.models.AccessToken;
-import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.models.CartAndNonce;
 import com.nxtlink.kaprika.models.Category;
 import com.nxtlink.kaprika.models.Dish;
+import com.nxtlink.kaprika.models.UserInfo;
 
 import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.Body;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
 
@@ -34,4 +32,7 @@ public interface KaprikaApiInterface {
 
     @POST("/payments/payment-methods")
     void notifyCartTransaction(@Body CartAndNonce cart, Callback<String> response);
+
+    @POST("/api/clients")
+    void postUserInfo(@Body UserInfo userInfo, Callback<String> response);
 }

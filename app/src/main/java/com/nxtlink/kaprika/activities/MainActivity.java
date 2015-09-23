@@ -6,9 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,19 +15,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.MenuAdapter;
-import com.nxtlink.kaprika.base.Credentials;
+import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.db.DataHelper;
 import com.nxtlink.kaprika.dialogs.ProgressDialogFragment;
 import com.nxtlink.kaprika.dialogs.SelectQuantityDialog;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
-import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
@@ -38,8 +36,9 @@ import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.models.Category;
 import com.nxtlink.kaprika.models.Dish;
 import com.nxtlink.kaprika.models.MenuCategory;
+import com.nxtlink.kaprika.picassoTransformers.CircleTransform;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
-import com.nxtlink.kaprika.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,27 +62,24 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     @Inject
     DataHelper dataHelper;
 
-
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @InjectView(R.id.listView_categories)
     ListView drawer;
-    @InjectView(R.id.version_app)
-    TextView versionApp;
     @InjectView(R.id.left_drawer)
     RelativeLayout drawerHolder;
+    @InjectView(R.id.profile_pic)
+    ImageView profilePic;
 
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<MenuCategory> options = new ArrayList<>();
-    private List<Category> mCategories;
     private ProgressDialogFragment progress;
     private BroadcastReceiver receiver;
     private TextView orderCount;
     private View cartView;
     private Dish currentDishSelected;
     private Cart currentCart = new Cart();
-    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +89,19 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
 
-        api.getLastUpdate(this);
-        versionApp.setText(Utils.getPrettyAppVersion(this));
-
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (prefs.isRegistered()){
+                    // show my profile
+                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
+                    startActivity(registration);
+                } else {
+                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
+                    startActivity(registration);
+                }
+            }
+        });
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -122,32 +128,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         mTitle = getResources().getString(R.string.categories);
         getSupportActionBar().setTitle(mTitle);
 
-        api.getCategories(new Callback<List<Category>>() {
-            @Override
-            public void success(List<Category> categories, Response response) {
-                mCategories = categories;
-
-                for (Category category : categories) {
-                    options.add(new MenuCategory(category.getName(), 0));
-                }
-
-                MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, options);
-                drawer.setAdapter(menuAdapter);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String categoryId = mCategories.get(position).getId();
+                String categoryId = ((MenuCategory) drawer.getAdapter().getItem(position)).getId();
+                mTitle = ((MenuCategory) drawer.getAdapter().getItem(position)).getCategoryName();
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 DishListViewFragment dlView = DishListViewFragment.newInstance(categoryId);
@@ -157,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                 drawer.setItemChecked(position, true);
                 drawerLayout.closeDrawer(drawerHolder);
 
-                mTitle = mCategories.get(position).getName();
                 getSupportActionBar().setTitle(mTitle);
             }
         });
@@ -189,11 +176,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         cartView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "clicked in click handler");
-                Intent checkout = new Intent(MainActivity.this, CheckoutActivity.class);
-                checkout.putExtra(CheckoutActivity.PAYLOAD, currentCart);
-                checkout.putExtra(CheckoutActivity.TOKEN, token);
-                startActivityForResult(checkout, 0);
+                if (prefs.isRegistered()) {
+                    Log.d(TAG, "clicked in click handler");
+                    Intent checkout = new Intent(MainActivity.this, CheckoutActivity.class);
+                    checkout.putExtra(CheckoutActivity.PAYLOAD, currentCart);
+                    startActivityForResult(checkout, 0);
+                } else {
+                    Intent registerActivity = new Intent(MainActivity.this, RegisterActivity.class);
+                    startActivity(registerActivity);
+                }
             }
         });
         return true;
@@ -236,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     @Override
     public void success(final Integer timeStampFromServer, Response response) {
         Log.d(TAG, "last update was in " + timeStampFromServer);
+
         if (prefs.getLastUpdate() < timeStampFromServer) {
             progress = new ProgressDialogFragment();
             progress.show(getFragmentManager(), "me");
@@ -250,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                     progress.setMax(dishes.size() * 2);
 
                     for (Dish dish : dishes) {
+                        Log.d(TAG, "SAVING: " + dish.getName());
                         dataHelper.saveDish(dish);
                         Log.d(TAG, "Dishes saved, getting images");
                     }
@@ -263,6 +256,28 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                     Log.d(TAG, "Error " + error.getMessage());
                 }
             });
+
+            api.getCategories(new Callback<List<Category>>() {
+                @Override
+                public void success(List<Category> categories, Response response) {
+                    for (Category category : categories) {
+                        dataHelper.saveCategory(category);
+                    }
+
+                    for (Category category : dataHelper.getCategories()){
+                        options.add(new MenuCategory(category.getName(), 0, category.getId()));
+                    }
+
+                    MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, options);
+                    drawer.setAdapter(menuAdapter);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d(TAG, error.getMessage());
+                }
+            });
+
         } else {
             Log.d(TAG, "DB is up to date");
         }
@@ -271,20 +286,25 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     @Override
     protected void onResume() {
         super.onResume();
+
+        api.getLastUpdate(this);
+
+        options.clear();
+
+        for (Category category : dataHelper.getCategories()){
+            options.add(new MenuCategory(category.getName(), 0, category.getId()));
+        }
+
+        MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, options);
+        drawer.setAdapter(menuAdapter);
+
         registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
-        api.getTokenClient(new Callback<AccessToken>() {
-            @Override
-            public void success(AccessToken accessToken, Response response) {
-                token = accessToken.getAccessToken();
-                Log.d(TAG, "Token retrieved " + token);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d(TAG, "ERROR GETTING TOKEN FOR TS "+ error.getMessage());
-            }
-        });
+        if(prefs.isRegistered()) {
+            Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(profilePic);
+        } else {
+            Picasso.with(this).load(R.drawable.default_profile).transform(new CircleTransform()).into(profilePic);
+        }
     }
 
     @Override

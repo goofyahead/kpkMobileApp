@@ -6,10 +6,16 @@ package com.nxtlink.kaprika.models;
 public class MenuCategory {
     private String categoryName;
     private int resourceImg;
+    private String id;
 
-    public MenuCategory(String categoryName, int resourceImg) {
+    public MenuCategory(String categoryName, int resourceImg, String id) {
         this.categoryName = categoryName;
         this.resourceImg = resourceImg;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getCategoryName() {

@@ -1,8 +1,8 @@
 package com.nxtlink.kaprika.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +21,7 @@ import com.nxtlink.kaprika.interfaces.CartUpdated;
 import com.nxtlink.kaprika.models.AccessToken;
 import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.models.CartAndNonce;
-
-import org.w3c.dom.Text;
+import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 
 import javax.inject.Inject;
 
@@ -52,8 +51,10 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
     TextView cartSum;
 
     @Inject KaprikaApiInterface api;
+    @Inject
+    KaprikaSharedPrefs prefs;
 
-    private String currentToken;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +63,10 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
 
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
-        mCart = (Cart) getIntent().getSerializableExtra(PAYLOAD);
-        currentToken = getIntent().getStringExtra(TOKEN);
+        mCart = (Cart) getIntent().getSerializableExtra(PAYLOAD);;
         cartListView.setAdapter(new CartViewAdapter(this, mCart, this));
 
-        cartSum.setText(String.format( "%.2f", mCart.getTotal()));
+        cartSum.setText(String.format("%.2f", mCart.getTotal()));
 
         checkoutDiscard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,7 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
             }
         });
 
+        checkoutBuy.setEnabled(false);
         checkoutBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +86,19 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
             }
         });
 
+        api.getTokenClient(new Callback<AccessToken>() {
+            @Override
+            public void success(AccessToken accessToken, Response response) {
+                checkoutBuy.setEnabled(true);
+                token = accessToken.getAccessToken();
+                Log.d(TAG, "Token retrieved " + token);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "ERROR GETTING TOKEN FOR TS " + error.getMessage());
+            }
+        });
     }
 
     @Override
@@ -123,7 +137,7 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
                         .submitButtonText(this.getString(R.string.checkout_buy))
                         .build();
         intent.putExtra(BraintreePaymentActivity.EXTRA_CUSTOMIZATION, customization);
-        intent.putExtra(BraintreePaymentActivity.EXTRA_CLIENT_TOKEN, currentToken);
+        intent.putExtra(BraintreePaymentActivity.EXTRA_CLIENT_TOKEN, token);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -135,14 +149,18 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == BraintreePaymentActivity.RESULT_OK) {
                 String paymentMethodNonce = data.getStringExtra(BraintreePaymentActivity.EXTRA_PAYMENT_METHOD_NONCE);
-                api.notifyCartTransaction(new CartAndNonce(mCart, paymentMethodNonce), new Callback<String>() {
+                api.notifyCartTransaction(new CartAndNonce(mCart, paymentMethodNonce, prefs.getUserFbId()), new Callback<String>() {
                     @Override
                     public void success(String s, Response response) {
                         Log.d(TAG, "SUCCESS: " + s);
+                        Intent payload = new Intent();
+                        payload.putExtra(PAYLOAD, new Cart());
+                        setResult(resultCode, payload);
+                        CheckoutActivity.this.finish();
                     }
 
                     @Override

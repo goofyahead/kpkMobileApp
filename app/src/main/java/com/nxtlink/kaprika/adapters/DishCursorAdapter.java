@@ -2,8 +2,6 @@ package com.nxtlink.kaprika.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;

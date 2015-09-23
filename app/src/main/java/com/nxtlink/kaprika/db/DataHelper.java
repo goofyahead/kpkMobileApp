@@ -17,6 +17,7 @@ import com.nxtlink.kaprika.models.Dish;
 import com.nxtlink.kaprika.models.Ingredient;
 import com.nxtlink.kaprika.models.Recommendation;
 import com.nxtlink.kaprika.models.Tag;
+import com.paypal.android.sdk.L;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -39,7 +40,9 @@ public class DataHelper {
 	}
 
 	public void deleteDB () {
-		openHelper.deleteDB();
+		boolean status = openHelper.deleteDB();
+
+        Log.d(TAG, "database deleted: " + status);
 
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES + Credentials.FOLDER_KPK_PICTURES);
         File [] pictureFiles = path.listFiles();
@@ -69,6 +72,7 @@ public class DataHelper {
 
 	public void saveDish(Dish dish) {
 		SQLiteDatabase db = openHelper.getWritableDatabase();
+
 		ContentValues values = new ContentValues();
 		values.put(DbHelper.DISH_ID, dish.getId());
 		values.put(DbHelper.DISH_NAME, dish.getName());
@@ -78,6 +82,7 @@ public class DataHelper {
 		values.put(DbHelper.DISH_PRICE, dish.getPrice());
 		values.put(DbHelper.DISH_DEMO, dish.isDemo());
 		db.insert(DbHelper.TABLE_NAME_DISHES, null, values);
+
 		db.close();
 
         DownloadManager.Request requestPicture = new DownloadManager.Request(Uri.parse(Credentials.SERVER_IP + Credentials.IMAGES_PATH + dish.getImage()));
@@ -113,6 +118,25 @@ public class DataHelper {
         }
 	}
 
+	public LinkedList<Category> getCategories() {
+		LinkedList<Category> categories = new LinkedList<>();
+
+		SQLiteDatabase db = openHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(DbHelper.TABLE_CATEGORIES_NAME, null, null, null, null, null, DbHelper.CATEGORY_NAME + " ASC");
+		while (cursor.moveToNext()) {
+			String name = cursor.getString(cursor.getColumnIndex(DbHelper.CATEGORY_NAME));
+			String description = cursor.getString(cursor.getColumnIndex(DbHelper.CATEGORY_DESCRIPTION));
+			String id = cursor.getString(cursor.getColumnIndex(DbHelper.CATEGORY_ID));
+			categories.add(new Category(id, name, description));
+		}
+		cursor.close();
+
+        db.close();
+
+		return categories;
+	}
+
 	public void saveTag(Tag currentTag) {
 		SQLiteDatabase db = openHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -125,12 +149,14 @@ public class DataHelper {
 
 	public void saveCategory(Category currentCategory) {
 		SQLiteDatabase db = openHelper.getWritableDatabase();
+
 		ContentValues values = new ContentValues();
 		values.put(DbHelper.CATEGORY_ID, currentCategory.getId());
 		values.put(DbHelper.CATEGORY_NAME, currentCategory.getName());
 		values.put(DbHelper.CATEGORY_DESCRIPTION,
 				currentCategory.getDescription());
 		db.insert(DbHelper.TABLE_CATEGORIES_NAME, null, values);
+
 		db.close();
 	}
 
@@ -194,7 +220,7 @@ public class DataHelper {
 	}
 	
 	public Dish getDishById (String id) {
-		return getDishFromCursor(getDishCursor(DbHelper.DISH_ID , id));
+		return getDishFromCursor(getDishCursor(DbHelper.DISH_ID, id));
 	}
 	
 	private Dish getDishFromCursor (Cursor cursor) {
@@ -212,4 +238,6 @@ public class DataHelper {
 		cursor.close();
 		return searchedDish;
 	}
+
+
 }

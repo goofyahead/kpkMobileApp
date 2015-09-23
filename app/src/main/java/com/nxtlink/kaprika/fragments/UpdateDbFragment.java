@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nxtlink.kaprika.R;
+import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.db.DataHelper;
-import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.models.Dish;
 
 import java.util.List;

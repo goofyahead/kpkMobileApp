@@ -19,5 +19,27 @@
     <string name="checkout_discard">Volver</string>
     <string name="checkout_total_amout">Total a pagar:</string>
     <string name="your_purchase">Tu compra</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="your_profile">Tu perfil</string>
+    <string name="facebook_app_id">1656535217926775</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="street_name">Nombre de la calle y numero:</string>
+    <string name="number_flat_door">Piso, letra, escalera:</string>
+    <string name="postal_code">Codigo postal:</string>
+    <string name="special_indications">Alguna indicacion especial:</string>
+    <string name="hint_street">Avenida de Europa 72</string>
+    <string name="hint_number_floor">3ero B</string>
+    <string name="hint_postal_code">28224</string>
+    <string name="hint_special_indications">telefonillo llamar a oficina 2</string>
+    <string name="button_register_go">continuar</string>
+    <string name="finish_registration">terminar</string>
+    <string name="error_street">debes introducir el nombre de tu calle</string>
+    <string name="postal_code_error">Debes introducir un codigo postal correcto</string>
+    <string name="loading_dishes">cargando el menu</string>
+    <string name="hint_phone_number">666554433</string>
+    <string name="phone_number">Numero de contacto:</string>
+    <string name="error_phone">Debes introducir un telefono valido</string>
 
 </resources>

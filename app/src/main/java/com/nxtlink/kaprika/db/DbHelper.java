@@ -139,7 +139,7 @@ public class DbHelper extends SQLiteOpenHelper{
         onCreate(db);
 	}
 
-	public void deleteDB() {
-		mContext.deleteDatabase(DATABASE_NAME);
+	public boolean deleteDB() {
+		return mContext.deleteDatabase(DATABASE_NAME);
 	}
 }

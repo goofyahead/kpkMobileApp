@@ -6,7 +6,7 @@ package com.nxtlink.kaprika.base;
 public class Credentials {
     public static final String FOLDER_KPK_PICTURES = "/KaprikaImages/";
     public static final String FOLDER_KPK_VIDEOS = "/KaprikaVideos/";
-    public static String SERVER_IP = "http://192.168.1.184";
+    public static String SERVER_IP = "http://kaprika.ngrok.io";
     public static String IMAGES_PATH = "/images/";
     public static String VIDEOS_PATH = "/videos/";
 }

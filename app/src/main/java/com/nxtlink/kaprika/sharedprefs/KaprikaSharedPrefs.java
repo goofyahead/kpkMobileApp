@@ -15,6 +15,9 @@ public class KaprikaSharedPrefs {
     private static final String REGISTERED_VERSION = "REGISTERED_VERSION";
     private static final String IS_FIRST_TIME = "IS_FIRST_TIME";
     private static final String LAST_UPDATED = "LAST_UPDATE";
+    private static final String USER_FB_ID = "USER_FB_ID";
+    private static final String USER_NAME = "USER_NAME";
+    private static final String USER_EMAIL = "USER_EMAIL";
     private final SharedPreferences prefs;
 
     public KaprikaSharedPrefs(Context context) {
@@ -44,11 +47,11 @@ public class KaprikaSharedPrefs {
         prefs.edit().putBoolean(IS_REGISTERED, status).commit();
     }
 
-    public String getSecret() {
+    public String getFbToken() {
         return prefs.getString(SECRET, "");
     }
 
-    public void setSecret(String secret) {
+    public void setFbToken(String secret) {
         prefs.edit().putString(SECRET, secret).commit();
     }
 
@@ -67,4 +70,29 @@ public class KaprikaSharedPrefs {
     public void setRegisteredVersion(int version) {
         prefs.edit().putInt(REGISTERED_VERSION, version).commit();
     }
+
+    public void setUserFbId(String userFbId) {
+        prefs.edit().putString(USER_FB_ID, userFbId).commit();
+    }
+
+    public String getUserFbId() {
+        return prefs.getString(USER_FB_ID, "");
+    }
+
+    public void setUserName(String userName) {
+        prefs.edit().putString(USER_NAME, userName).commit();
+    }
+
+    public void setUserEmail(String email) {
+        prefs.edit().putString(USER_EMAIL, email).commit();
+    }
+
+    public String getUserName() {
+        return prefs.getString(USER_NAME, "");
+    }
+
+    public String getUserEmail() {
+        return prefs.getString(USER_EMAIL, "");
+    }
+
 }
