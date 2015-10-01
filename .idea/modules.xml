@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Kaprika.iml" filepath="$PROJECT_DIR$/Kaprika.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kpkMobileApp.iml" filepath="$PROJECT_DIR$/kpkMobileApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kpklib/kpklib.iml" filepath="$PROJECT_DIR$/kpklib/kpklib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/orders/orders.iml" filepath="$PROJECT_DIR$/orders/orders.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tpvkpk/tpvkpk.iml" filepath="$PROJECT_DIR$/tpvkpk/tpvkpk.iml" />
     </modules>
   </component>
 </project>

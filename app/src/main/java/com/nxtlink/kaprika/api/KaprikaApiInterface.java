@@ -1,7 +1,7 @@
 package com.nxtlink.kaprika.api;
 
 import com.nxtlink.kaprika.models.AccessToken;
-import com.nxtlink.kaprika.models.CartAndNonce;
+import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.models.Category;
 import com.nxtlink.kaprika.models.Dish;
 import com.nxtlink.kaprika.models.UserInfo;
@@ -31,7 +31,7 @@ public interface KaprikaApiInterface {
     void getTokenClient (Callback<AccessToken> token);
 
     @POST("/payments/payment-methods")
-    void notifyCartTransaction(@Body CartAndNonce cart, Callback<String> response);
+    void notifyCartTransaction(@Body Cart items, Callback<String> response);
 
     @POST("/api/clients")
     void postUserInfo(@Body UserInfo userInfo, Callback<String> response);

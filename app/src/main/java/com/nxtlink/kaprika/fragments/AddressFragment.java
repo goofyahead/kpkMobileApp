@@ -14,9 +14,7 @@ import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.models.UserInfo;
-import com.nxtlink.kaprika.picassoTransformers.CircleTransform;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
-import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 

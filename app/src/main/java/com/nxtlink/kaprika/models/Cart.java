@@ -11,29 +11,45 @@ import java.util.LinkedHashMap;
 public class Cart implements Serializable{
 
     private static final String TAG = Cart.class.getName();
-    private LinkedHashMap<String, CartItem> cart;
+    private LinkedHashMap<String, CartItem> itemList;
+    private String nonce;
+    private String fbId;
 
-    public Cart() {
-        this.cart = new LinkedHashMap<>();
+    public Cart(String nonce, String fbId) {
+        this.itemList = new LinkedHashMap<>();
+        this.fbId = fbId;
+        this.nonce = nonce;
     }
 
-    public Cart(LinkedHashMap<String, CartItem> dishes) {
-        this.cart = dishes;
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public String getFbId() {
+        return fbId;
+    }
+
+    public void setFbId(String fbId) {
+        this.fbId = fbId;
     }
 
     public void addItemToCart(Dish dishToAdd, int quantity){
-        if (cart.containsKey(dishToAdd.getId())){
+        if (itemList.containsKey(dishToAdd.getId())){
             Log.d(TAG, "Cart already contains dish augmenting qty");
-            CartItem current = cart.get(dishToAdd.getId());
+            CartItem current = itemList.get(dishToAdd.getId());
             current.setQuantity(current.getQuantity() + quantity);
         } else {
-            cart.put(dishToAdd.getId(), new CartItem(dishToAdd, quantity));
+            itemList.put(dishToAdd.getId(), new CartItem(dishToAdd, quantity));
         }
     }
 
     public float getTotal (){
         float total = 0;
-        for (CartItem item : cart.values()) {
+        for (CartItem item : itemList.values()) {
             total = total + (item.getItem().getPrice() * item.getQuantity());
         }
         return total;
@@ -41,21 +57,21 @@ public class Cart implements Serializable{
 
     public int getItemsCount() {
         int total = 0;
-        for (CartItem item : cart.values()) {
+        for (CartItem item : itemList.values()) {
             total = total + item.getQuantity();
         }
         return total;
     }
 
     public int getItemCount() {
-        return cart.size();
+        return itemList.size();
     }
 
     public CartItem getItem(int position) {
-        return (CartItem) cart.values().toArray()[position];
+        return (CartItem) itemList.values().toArray()[position];
     }
 
     public void deleteItem(int position) {
-        cart.remove(getItem(position).getItem().getId());
+        itemList.remove(getItem(position).getItem().getId());
     }
 }

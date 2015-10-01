@@ -20,7 +20,6 @@ import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.interfaces.CartUpdated;
 import com.nxtlink.kaprika.models.AccessToken;
 import com.nxtlink.kaprika.models.Cart;
-import com.nxtlink.kaprika.models.CartAndNonce;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 
 import javax.inject.Inject;
@@ -153,12 +152,13 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
         if (requestCode == REQUEST_CODE) {
             if (resultCode == BraintreePaymentActivity.RESULT_OK) {
                 String paymentMethodNonce = data.getStringExtra(BraintreePaymentActivity.EXTRA_PAYMENT_METHOD_NONCE);
-                api.notifyCartTransaction(new CartAndNonce(mCart, paymentMethodNonce, prefs.getUserFbId()), new Callback<String>() {
+                mCart.setNonce(paymentMethodNonce);
+                api.notifyCartTransaction( mCart, new Callback<String>() {
                     @Override
                     public void success(String s, Response response) {
                         Log.d(TAG, "SUCCESS: " + s);
                         Intent payload = new Intent();
-                        payload.putExtra(PAYLOAD, new Cart());
+                        payload.putExtra(PAYLOAD, new Cart("", ""));
                         setResult(resultCode, payload);
                         CheckoutActivity.this.finish();
                     }

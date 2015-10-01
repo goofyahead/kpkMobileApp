@@ -17,7 +17,6 @@ import com.nxtlink.kaprika.models.Dish;
 import com.nxtlink.kaprika.models.Ingredient;
 import com.nxtlink.kaprika.models.Recommendation;
 import com.nxtlink.kaprika.models.Tag;
-import com.paypal.android.sdk.L;
 
 import java.io.File;
 import java.util.LinkedList;

@@ -31,7 +31,6 @@ import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
-import com.nxtlink.kaprika.models.AccessToken;
 import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.models.Category;
 import com.nxtlink.kaprika.models.Dish;
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     private TextView orderCount;
     private View cartView;
     private Dish currentDishSelected;
-    private Cart currentCart = new Cart();
+    private Cart currentCart ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (prefs.isRegistered()){
+                if (prefs.isRegistered()) {
                     // show my profile
                     Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
                     startActivity(registration);
@@ -288,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         super.onResume();
 
         api.getLastUpdate(this);
+        currentCart = new Cart("", prefs.getUserFbId());
 
         options.clear();
 
