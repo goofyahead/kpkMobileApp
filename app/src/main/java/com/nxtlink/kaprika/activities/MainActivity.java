@@ -15,29 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.MenuAdapter;
-import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.KaprikaApplication;
-import com.nxtlink.kaprika.db.DataHelper;
 import com.nxtlink.kaprika.dialogs.ProgressDialogFragment;
 import com.nxtlink.kaprika.dialogs.SelectQuantityDialog;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
-import com.nxtlink.kaprika.models.Cart;
-import com.nxtlink.kaprika.models.Category;
-import com.nxtlink.kaprika.models.Dish;
-import com.nxtlink.kaprika.models.MenuCategory;
-import com.nxtlink.kaprika.picassoTransformers.CircleTransform;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +37,13 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.api.KaprikaApiInterface;
+import kpklib.db.DataHelper;
+import kpklib.models.Cart;
+import kpklib.models.Category;
+import kpklib.models.Dish;
+import kpklib.models.MenuCategory;
+import kpklib.models.MenuDrawerCategory;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -67,12 +65,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     ListView drawer;
     @InjectView(R.id.left_drawer)
     RelativeLayout drawerHolder;
-    @InjectView(R.id.profile_pic)
-    ImageView profilePic;
+    @InjectView(R.id.profile_options_listview)
+    ListView profileListOptions;
+
 
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ArrayList<MenuCategory> options = new ArrayList<>();
+    private ArrayList<MenuDrawerCategory> productOptions = new ArrayList<>();
+    private ArrayList<MenuDrawerCategory> profileOptions = new ArrayList<>();
     private ProgressDialogFragment progress;
     private BroadcastReceiver receiver;
     private TextView orderCount;
@@ -88,19 +88,27 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
 
-        profilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (prefs.isRegistered()) {
-                    // show my profile
-                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
-                    startActivity(registration);
-                } else {
-                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
-                    startActivity(registration);
-                }
-            }
-        });
+        // Create productOptions for profile
+        profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_home), 0, getResources().getDrawable(R.drawable.icon_home)));
+        profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_my_orders), 0, getResources().getDrawable(R.drawable.icon_home)));
+        // Create productOptions for menu
+        productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_featured_products), 0, getResources().getDrawable(R.drawable.icon_featured)));
+        productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_products_list), 0, getResources().getDrawable(R.drawable.icon_product)));
+        productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_product_search), 0, getResources().getDrawable(R.drawable.icon_search)));
+
+//        profilePic.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (prefs.isRegistered()) {
+//                    // show my profile
+//                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
+//                    startActivity(registration);
+//                } else {
+//                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
+//                    startActivity(registration);
+//                }
+//            }
+//        });
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -263,11 +271,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                         dataHelper.saveCategory(category);
                     }
 
-                    for (Category category : dataHelper.getCategories()){
-                        options.add(new MenuCategory(category.getName(), 0, category.getId()));
-                    }
-
-                    MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, options);
+                    MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
                     drawer.setAdapter(menuAdapter);
                 }
 
@@ -289,22 +293,19 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         api.getLastUpdate(this);
         currentCart = new Cart("", prefs.getUserFbId());
 
-        options.clear();
-
-        for (Category category : dataHelper.getCategories()){
-            options.add(new MenuCategory(category.getName(), 0, category.getId()));
-        }
-
-        MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, options);
+        MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
         drawer.setAdapter(menuAdapter);
+
+        MenuAdapter profileMenuAdapter = new MenuAdapter(MainActivity.this, profileOptions);
+        profileListOptions.setAdapter(profileMenuAdapter);
 
         registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
-        if(prefs.isRegistered()) {
-            Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(profilePic);
-        } else {
-            Picasso.with(this).load(R.drawable.default_profile).transform(new CircleTransform()).into(profilePic);
-        }
+//        if(prefs.isRegistered()) {
+//            Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(profilePic);
+//        } else {
+//            Picasso.with(this).load(R.drawable.icon_profile_small).transform(new CircleTransform()).into(profilePic);
+//        }
     }
 
     @Override

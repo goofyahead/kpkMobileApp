@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
-import com.nxtlink.kaprika.models.MenuCategory;
 
 import java.util.ArrayList;
+
+import kpklib.models.MenuCategory;
+import kpklib.models.MenuDrawerCategory;
 
 /**
  * Created by goofyahead on 9/11/14.
@@ -19,10 +21,10 @@ import java.util.ArrayList;
 public class MenuAdapter extends BaseAdapter {
 
     //    private HashMap<String, Integer> categoriesMap = new HashMap<>();
-    private ArrayList<MenuCategory> categories;
+    private ArrayList<MenuDrawerCategory> categories;
     private LayoutInflater mInflater;
 
-    public MenuAdapter(Context context, ArrayList<MenuCategory> categories) {
+    public MenuAdapter(Context context, ArrayList<MenuDrawerCategory> categories) {
         this.categories = categories;
         this.mInflater = LayoutInflater.from(context);
     }
@@ -50,6 +52,7 @@ public class MenuAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.categories_item, null);
             holder.name = (TextView) convertView.findViewById(R.id.categories_item_name);
             holder.image = (ImageView) convertView.findViewById(R.id.category_image);
+            holder.badge = (TextView) convertView.findViewById(R.id.badge);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -57,8 +60,14 @@ public class MenuAdapter extends BaseAdapter {
 
         holder.name.setText(categories.get(position).getCategoryName());
 
-        if (categories.get(position).getResourceImg() != 0){
-            holder.image.setImageResource(categories.get(position).getResourceImg());
+        if (categories.get(position).getBadgeCount() == 0) {
+            holder.badge.setVisibility(View.INVISIBLE);
+        } else {
+            holder.badge.setVisibility(View.VISIBLE);
+            holder.badge.setText(categories.get(position).getBadgeCount());
+        }
+        if (categories.get(position).getImg() != null){
+            holder.image.setImageDrawable(categories.get(position).getImg());
         }
 
         return convertView;
@@ -68,5 +77,6 @@ public class MenuAdapter extends BaseAdapter {
     private class ViewHolder {
         private TextView name;
         private ImageView image;
+        private TextView badge;
     }
 }

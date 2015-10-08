@@ -6,12 +6,13 @@ package com.mgl.orders.modules;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.net.Credentials;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import kpklib.api.KaprikaApiInterface;
+import kpklib.constants.Credentials;
 import retrofit.RestAdapter;
 
 
@@ -36,29 +37,7 @@ public class AndroidModule {
         return mContext;
     }
 
-    @Provides
-    @Singleton
-    RequestQueue provideQueue() {
-        return Volley.newRequestQueue(mContext);
-    }
 
-    @Provides
-    @Singleton
-    ImageLoader provideImageLoader(RequestQueue mRequestQueue) {
-        return new ImageLoader(mRequestQueue, new BitmapLruCache(50));
-    }
-
-    @Provides
-    @Singleton
-    KaprikaSharedPrefs provideSharedPrefs() {
-        return new KaprikaSharedPrefs(mContext);
-    }
-
-    @Provides
-    @Singleton
-    DataHelper provideDataHelper () {
-        return new DataHelper(mContext);
-    }
 
     @Provides
     @Singleton

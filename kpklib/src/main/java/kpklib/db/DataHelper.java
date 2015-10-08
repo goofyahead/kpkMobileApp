@@ -217,7 +217,24 @@ public class DataHelper {
 	    final String[] SELECTION_ARGS = {args};
 		return db.query(DbHelper.TABLE_NAME_DISHES, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.DISH_NAME + " ASC");
 	}
-	
+
+	public LinkedList<Dish> getDemoDishes(){
+		Cursor cursor = getDishCursor(DbHelper.DISH_DEMO, "1");
+		LinkedList<Dish> retrieved = new LinkedList<>();
+		Dish currentDish;
+		while(cursor.moveToNext()) {
+			String video = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_VIDEO));
+			String name = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_NAME));
+			float price = cursor.getFloat(cursor.getColumnIndex(DbHelper.DISH_PRICE));
+			String description = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_DESCRIPTION));
+			String id = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_ID));
+			String image = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_IMAGE));
+			boolean demo = cursor.getInt(cursor.getColumnIndex(DbHelper.DISH_DEMO)) == 0 ? false : true;
+			retrieved.add(new Dish(id, name, description, price, image, video, demo, null, null, null, null));
+		}
+		return retrieved;
+	}
+
 	public Dish getDishById (String id) {
 		return getDishFromCursor(getDishCursor(DbHelper.DISH_ID, id));
 	}

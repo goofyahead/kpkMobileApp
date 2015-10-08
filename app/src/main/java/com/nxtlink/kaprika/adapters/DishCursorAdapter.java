@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
-import com.nxtlink.kaprika.base.Credentials;
-import com.nxtlink.kaprika.db.DbHelper;
 import com.nxtlink.kaprika.interfaces.AddToCart;
-import com.nxtlink.kaprika.models.Dish;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+
+import kpklib.constants.Credentials;
+import kpklib.db.DbHelper;
+import kpklib.models.Dish;
 
 public class DishCursorAdapter extends CursorAdapter {
     private static final String TAG = DishCursorAdapter.class.getName();

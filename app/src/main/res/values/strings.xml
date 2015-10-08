@@ -41,5 +41,17 @@
     <string name="hint_phone_number">666554433</string>
     <string name="phone_number">Numero de contacto:</string>
     <string name="error_phone">Debes introducir un telefono valido</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="drawer_menu_header">CARTA</string>
+    <string name="nav_featured_products">Destacados</string>
+    <string name="products_title">CARTA</string>
+    <string name="nav_products_list">Productos</string>
+    <string name="nav_product_search">Busqueda</string>
+    <string name="view_profile">Ver perfil</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_my_orders">Mis pedidos</string>
 
 </resources>

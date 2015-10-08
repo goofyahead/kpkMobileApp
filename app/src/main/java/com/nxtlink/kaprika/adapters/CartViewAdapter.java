@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.interfaces.CartUpdated;
-import com.nxtlink.kaprika.models.Cart;
+
+import kpklib.models.Cart;
 
 /**
  * Created by goofyahead on 8/09/15.

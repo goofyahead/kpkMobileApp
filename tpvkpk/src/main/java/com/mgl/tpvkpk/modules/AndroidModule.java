@@ -8,6 +8,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 
 import com.mgl.tpvkpk.activities.MainActivity;
+import com.mgl.tpvkpk.services.PrinterService;
 
 import javax.inject.Singleton;
 
@@ -23,7 +24,8 @@ import retrofit.RestAdapter;
 @Module(injects = {
         MainActivity.class,
         DataHelper.class,
-        ApiHelper.class
+        ApiHelper.class,
+        PrinterService.class
 },
         library = true)
 public class AndroidModule {

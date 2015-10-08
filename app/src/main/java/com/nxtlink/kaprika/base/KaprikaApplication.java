@@ -10,12 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import dagger.ObjectGraph;
+import kpklib.interfaces.Injector;
 
 
 /**
  * Created by goofyahead on 9/8/14.
  */
-public class KaprikaApplication extends Application {
+public class KaprikaApplication extends Application implements Injector{
     private ObjectGraph graph;
     private static Context mContext;
 
@@ -39,5 +40,10 @@ public class KaprikaApplication extends Application {
 
     public void inject(Object object) {
         graph.inject(object);
+    }
+
+    @Override
+    public ObjectGraph getObjectGraph() {
+        return graph;
     }
 }

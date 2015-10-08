@@ -7,6 +7,7 @@ import kpklib.models.AccessToken;
 import kpklib.models.Cart;
 import kpklib.models.Category;
 import kpklib.models.Dish;
+import kpklib.models.PrintableOrder;
 import kpklib.models.UserInfo;
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -18,6 +19,10 @@ import retrofit.http.POST;
  * Created by goofyahead on 9/8/14.
  */
 public interface KaprikaApiInterface {
+
+    @GET("/api/ordersToPrint")
+    void getOrdersToPrint(Callback<PrintableOrder> order);
+
     @GET("/api/currentmenu")
     void getCurrentMenu(Callback<List<Dish>> dishes);
 

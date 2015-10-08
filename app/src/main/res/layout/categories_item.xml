@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
+    android:minHeight="49dp"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_featured"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="19dp"
         android:id="@+id/category_image" />
 
     <TextView
-        style="@style/categories"
+        android:layout_marginLeft="28dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/category_image"
         android:textColor="@color/nowfie_lighter_gray"
-        android:padding="10dp"
         android:id="@+id/categories_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:text="TextView" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=""
-        android:id="@+id/category_selected_items"
+        android:layout_marginRight="24dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"/>
+        android:gravity="center"
+        android:background="@drawable/badge_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:id="@+id/badge" />
 
 
-
-</LinearLayout>
+</RelativeLayout>

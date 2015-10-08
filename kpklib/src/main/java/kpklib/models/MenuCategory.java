@@ -6,11 +6,24 @@ package kpklib.models;
 public class MenuCategory {
     private String categoryName;
     private int resourceImg;
+    private int badgeCount;
     private String id;
 
     public MenuCategory(String categoryName, int resourceImg, String id) {
         this.categoryName = categoryName;
         this.resourceImg = resourceImg;
+        this.id = id;
+    }
+
+    public int getBadgeCount() {
+        return badgeCount;
+    }
+
+    public void setBadgeCount(int badgeCount) {
+        this.badgeCount = badgeCount;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 

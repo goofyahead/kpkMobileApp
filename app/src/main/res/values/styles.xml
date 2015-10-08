@@ -5,49 +5,150 @@
 
     </style>
 
-    <style name="header" parent="@android:style/TextAppearance">
-        <item name="android:textSize">34sp</item>
-        <item name="android:textStyle">bold</item>
+    <style name="body" parent="@android:style/TextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="categories" parent="@android:style/TextAppearance">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">bold</item>
+    <style name="body_emphasized" parent="@android:style/TextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="body_emphasized_light" parent="@android:style/TextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/light</item>
+    </style>
+
+    <style name="body_neutral" parent="@android:style/TextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark_lighter</item>
+    </style>
+
+    <style name="button" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="button_disabled" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/neutral</item>
+    </style>
+
+    <style name="button_light" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/light</item>
+    </style>
+
+    <style name="button_drawer" parent="@android:style/TextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_1" parent="@android:style/TextAppearance">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_2" parent="@android:style/TextAppearance">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_2_light" parent="@android:style/TextAppearance">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_2_success" parent="@android:style/TextAppearance">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/success</item>
+    </style>
+
+    <style name="header_3" parent="@android:style/TextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_3_emphasized" parent="@android:style/TextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_3_light" parent="@android:style/TextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="header_3_neutral" parent="@android:style/TextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/dark_lighter</item>
+    </style>
+
+    <style name="notification" parent="@android:style/TextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/light</item>
     </style>
 
     <style name="section" parent="@android:style/TextAppearance">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
-    <style name="menu" parent="@android:style/TextAppearance">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="body" parent="@android:style/TextAppearance">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="sub_bold" parent="@android:style/TextAppearance">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="sub_body" parent="@android:style/TextAppearance">
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/dark_lighter</item>
     </style>
 
     <style name="small" parent="@android:style/TextAppearance">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="menu_small" parent="@android:style/TextAppearance">
+    <style name="small_emphasized" parent="@android:style/TextAppearance">
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/dark</item>
     </style>
+
+    <style name="small_emphasized_neutral" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/neutral</item>
+    </style>
+
+    <style name="small_emphasized_success" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item><item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/success</item>
+    </style>
+
+    <style name="small_light" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/neutral</item>
+    </style>
+
+
+    <style name="submenu" parent="@android:style/TextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="tab" parent="@android:style/TextAppearance">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

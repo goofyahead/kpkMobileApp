@@ -1,6 +1,7 @@
 package com.nxtlink.kaprika.interfaces;
 
-import com.nxtlink.kaprika.models.Dish;
+
+import kpklib.models.Dish;
 
 /**
  * Created by goofyahead on 2/09/15.

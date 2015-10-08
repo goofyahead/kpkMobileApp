@@ -11,15 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.nxtlink.kaprika.R;
-import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.KaprikaApplication;
-import com.nxtlink.kaprika.models.UserInfo;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.api.KaprikaApiInterface;
+import kpklib.models.UserInfo;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

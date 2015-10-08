@@ -55,7 +55,7 @@
 
 
         <TextView
-            style="@style/sub_body"
+            style="@style/body"
             android:layout_marginTop="10dp"
             android:textColor="@color/nowfie_gray"
             android:layout_width="wrap_content"
@@ -74,14 +74,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
             <TextView
-                style="@style/sub_bold"
+                style="@style/body_neutral"
                 android:padding="3dp"
                 android:id="@+id/add_to_cart"
                 android:text="@string/delivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                style="@style/sub_bold"
+                style="@style/body_neutral"
                 android:id="@+id/favourite"
                 android:padding="3dp"
                 android:textColor="@color/nowfie_purple"
@@ -94,7 +94,6 @@
     </LinearLayout>
 
     <View
-        android:background="@drawable/shadow"
         android:layout_width="match_parent"
         android:layout_height="5dp"/>
     <View

@@ -25,7 +25,7 @@ public class KaprikaSharedPrefs {
     }
 
     public int getLastUpdate() {
-        return prefs.getInt(LAST_UPDATED, 0);
+        return prefs.getInt(LAST_UPDATED, -1);
     }
 
     public void setLastUpdated(int timeStamp) {

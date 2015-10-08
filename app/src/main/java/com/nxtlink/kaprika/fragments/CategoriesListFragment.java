@@ -18,11 +18,11 @@ import android.widget.ListView;
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.CategoryCursorAdapter;
 import com.nxtlink.kaprika.base.KaprikaApplication;
-import com.nxtlink.kaprika.db.DbHelper;
-import com.nxtlink.kaprika.providers.DishProvider;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.db.DbHelper;
+import kpklib.providers.DishProvider;
 
 public class CategoriesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 	

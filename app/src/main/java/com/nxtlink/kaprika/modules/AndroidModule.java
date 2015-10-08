@@ -13,9 +13,6 @@ import com.android.volley.toolbox.Volley;
 import com.nxtlink.kaprika.activities.CheckoutActivity;
 import com.nxtlink.kaprika.activities.MainActivity;
 import com.nxtlink.kaprika.activities.RegisterActivity;
-import com.nxtlink.kaprika.api.KaprikaApiInterface;
-import com.nxtlink.kaprika.base.Credentials;
-import com.nxtlink.kaprika.db.DataHelper;
 import com.nxtlink.kaprika.fragments.AddressFragment;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
@@ -27,6 +24,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import kpklib.api.KaprikaApiInterface;
+import kpklib.constants.Credentials;
+import kpklib.db.DataHelper;
 import retrofit.RestAdapter;
 
 @Module(injects = {

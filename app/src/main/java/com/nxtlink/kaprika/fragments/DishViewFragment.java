@@ -11,19 +11,20 @@ import android.view.ViewGroup;
 import android.widget.VideoView;
 
 import com.nxtlink.kaprika.R;
-import com.nxtlink.kaprika.base.Credentials;
 import com.nxtlink.kaprika.base.KaprikaApplication;
-import com.nxtlink.kaprika.db.DataHelper;
-import com.nxtlink.kaprika.models.Dish;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.constants.Credentials;
+import kpklib.db.DataHelper;
+import kpklib.models.Dish;
 
 public class DishViewFragment extends Fragment {
 
-	@Inject DataHelper dataHelper;
+	@Inject
+	DataHelper dataHelper;
 
     @InjectView(R.id.dish_view_videoview)
     VideoView videoView;

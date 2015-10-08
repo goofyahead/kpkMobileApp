@@ -1,6 +1,7 @@
 package com.nxtlink.kaprika.interfaces;
 
-import com.nxtlink.kaprika.models.Cart;
+
+import kpklib.models.Cart;
 
 /**
  * Created by goofyahead on 8/09/15.

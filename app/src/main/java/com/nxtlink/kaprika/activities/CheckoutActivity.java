@@ -15,17 +15,17 @@ import com.braintreepayments.api.dropin.BraintreePaymentActivity;
 import com.braintreepayments.api.dropin.Customization;
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.CartViewAdapter;
-import com.nxtlink.kaprika.api.KaprikaApiInterface;
 import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.interfaces.CartUpdated;
-import com.nxtlink.kaprika.models.AccessToken;
-import com.nxtlink.kaprika.models.Cart;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.api.KaprikaApiInterface;
+import kpklib.models.AccessToken;
+import kpklib.models.Cart;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -49,7 +49,8 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
     @InjectView(R.id.checkout_price_sum)
     TextView cartSum;
 
-    @Inject KaprikaApiInterface api;
+    @Inject
+    KaprikaApiInterface api;
     @Inject
     KaprikaSharedPrefs prefs;
 

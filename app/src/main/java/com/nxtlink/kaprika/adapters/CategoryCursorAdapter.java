@@ -9,7 +9,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
-import com.nxtlink.kaprika.db.DbHelper;
+
+import kpklib.db.DbHelper;
 
 public class CategoryCursorAdapter extends CursorAdapter {
 	private LayoutInflater inflater;

@@ -5,7 +5,8 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.zj.btsdk.PrintPic;
 
 
 public class PrintDemo extends Activity {
+	private static final String TAG = PrintDemo.class.getName();
 	Button btnSearch;
 	Button btnSendDraw;
 	Button btnSend;
@@ -205,5 +207,51 @@ public class PrintDemo extends Activity {
 		pg.drawImage(0, 0, "/mnt/sdcard/icon.jpg");
     	sendData = pg.printDraw();
     	mService.write(sendData);   //��ӡbyte�����
+
+		Bitmap patito = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.patito);
+		Bitmap resized = Bitmap.createScaledBitmap(patito, 32, 32, false);
+
+		byte [] result = new byte[resized.getHeight() + 8];
+		int [] resultInt = new int [resized.getWidth() * resized.getHeight()];
+//        byte [] byteCode = new byte[resized.getWidth() * resized.getHeight()];
+		result[0] = 29;
+		result[1] = 118;
+		result[2] = 48;
+		result[3] = 0;
+		result[4] = (byte)(resized.getWidth());
+		result[5] = 0;
+		result[6] = (byte)(resized.getHeight() % 256);
+		result[7] = (byte)(resized.getHeight() / 256);
+
+		resized.getPixels(resultInt, 0, resized.getWidth(), 0, 0, resized.getHeight() , resized.getWidth());
+		int acumlatedInteger = 0;
+		String acumulated = "";
+		int counterArray = 8;
+		byte [] strinByte = new byte[resized.getWidth()];
+		Log.d(TAG, "array is: " + resultInt.length);
+
+		for (int r = 0; r < resultInt.length; r ++){
+//            Log.d(TAG, "module is " + (r % 40));
+			if ( r % resized.getWidth() == 0 && acumulated.length() > 1) {
+
+				int row = Integer.parseInt(acumulated, 2);
+				result[counterArray] = (byte) row;
+				counterArray++;
+//                String.format("%16s", Integer.toBinaryString(1)).replace(" ", "0")
+//                                    Log.d(TAG, "row:" + String.format("%32s", Integer.toBinaryString(row)).replace(" ", "0"));
+				acumulated = "";
+				acumlatedInteger = 0;
+			} else {
+//                Log.d(TAG, "" + r);
+				if (resultInt[r] == -1){
+					strinByte[r%resized.getWidth()] = 1;
+					acumlatedInteger = acumlatedInteger + (2 ^ r);
+					acumulated = acumulated + "1";
+				} else {
+					strinByte[r%resized.getWidth()] = 0;
+					acumulated = acumulated + "0";
+				}
+			}
+		}
     }
 }
