@@ -26,6 +26,7 @@ import com.nxtlink.kaprika.dialogs.ProgressDialogFragment;
 import com.nxtlink.kaprika.dialogs.SelectQuantityDialog;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
+import com.nxtlink.kaprika.fragments.HomeFragment;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
@@ -42,7 +43,6 @@ import kpklib.db.DataHelper;
 import kpklib.models.Cart;
 import kpklib.models.Category;
 import kpklib.models.Dish;
-import kpklib.models.MenuCategory;
 import kpklib.models.MenuDrawerCategory;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @InjectView(R.id.listView_categories)
-    ListView drawer;
+    ListView navigationOptions;
     @InjectView(R.id.left_drawer)
     RelativeLayout drawerHolder;
     @InjectView(R.id.profile_options_listview)
@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
 
         // Create productOptions for profile
         profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_home), 0, getResources().getDrawable(R.drawable.icon_home)));
-        profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_my_orders), 0, getResources().getDrawable(R.drawable.icon_home)));
+        profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_my_orders), 0, getResources().getDrawable(R.drawable.icon_receipt)));
         // Create productOptions for menu
         productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_featured_products), 0, getResources().getDrawable(R.drawable.icon_featured)));
-        productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_products_list), 0, getResources().getDrawable(R.drawable.icon_product)));
+        productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_products_list), 0, getResources().getDrawable(R.drawable.icon_products)));
         productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_product_search), 0, getResources().getDrawable(R.drawable.icon_search)));
 
 //        profilePic.setOnClickListener(new View.OnClickListener() {
@@ -113,17 +113,17 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 drawerLayout,         /* DrawerLayout object */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
+                R.string.drawer_open,  /* "open navigationOptions" description */
+                R.string.drawer_close  /* "close navigationOptions" description */
         ) {
 
-            /** Called when a drawer has settled in a completely closed state. */
+            /** Called when a navigationOptions has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(mTitle);
             }
 
-            /** Called when a drawer has settled in a completely open state. */
+            /** Called when a navigationOptions has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle(mTitle);
@@ -138,18 +138,24 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        navigationOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String categoryId = ((MenuCategory) drawer.getAdapter().getItem(position)).getId();
-                mTitle = ((MenuCategory) drawer.getAdapter().getItem(position)).getCategoryName();
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        DishListViewFragment dlView = DishListViewFragment.newInstance("560018660d796bff06223c4c");
+                        ft.replace(R.id.fragment_holder, dlView);
+                        ft.commit();
+                        break;
+                    case 2:
+                        break;
+                }
+                mTitle = ((MenuDrawerCategory) navigationOptions.getAdapter().getItem(position)).getCategoryName();
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                DishListViewFragment dlView = DishListViewFragment.newInstance(categoryId);
-                ft.replace(R.id.fragment_holder, dlView);
-                ft.commit();
-
-                drawer.setItemChecked(position, true);
+                navigationOptions.setItemChecked(position, true);
                 drawerLayout.closeDrawer(drawerHolder);
 
                 getSupportActionBar().setTitle(mTitle);
@@ -272,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                     }
 
                     MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
-                    drawer.setAdapter(menuAdapter);
+                    navigationOptions.setAdapter(menuAdapter);
                 }
 
                 @Override
@@ -294,12 +300,20 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         currentCart = new Cart("", prefs.getUserFbId());
 
         MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
-        drawer.setAdapter(menuAdapter);
+        navigationOptions.setAdapter(menuAdapter);
 
         MenuAdapter profileMenuAdapter = new MenuAdapter(MainActivity.this, profileOptions);
         profileListOptions.setAdapter(profileMenuAdapter);
 
         registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+        // Load home fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        HomeFragment home = HomeFragment.newInstance();
+        ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
+        ft.replace(R.id.fragment_holder, home);
+        ft.commit();
+
 
 //        if(prefs.isRegistered()) {
 //            Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(profilePic);

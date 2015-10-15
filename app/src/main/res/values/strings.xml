@@ -53,5 +53,11 @@
     <string name="view_profile">Ver perfil</string>
     <string name="nav_home">Inicio</string>
     <string name="nav_my_orders">Mis pedidos</string>
+    <string name="fav_orders">Pedidos favoritos</string>
+    <string name="view_more">Ver todos</string>
+    <string name="last_order">Ultimo pedido</string>
+    <string name="repeat_button">Repetir</string>
+    <string name="more_info">MAS INFO</string>
+    <string name="add">AÑADIR</string>
 
 </resources>

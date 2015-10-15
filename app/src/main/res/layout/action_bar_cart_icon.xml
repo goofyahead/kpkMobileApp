@@ -10,28 +10,21 @@
 
     <ImageView
         android:id="@+id/hotlist_bell"
-        android:src="@drawable/icon_cart_empty"
+        android:src="@drawable/icon_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="2dp"
-        android:contentDescription="bell"
+        android:padding="4dp"
+        android:contentDescription="@string/cart"
         />
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        style="@style/button"
         android:id="@+id/cart_count"
+        android:layout_marginLeft="4dp"
         android:layout_width="wrap_content"
-        android:minWidth="16sp"
-        android:textStyle="bold"
-        android:textSize="10sp"
-        android:textColor="@color/nowfie_black"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="2"
-        android:layout_alignTop="@id/hotlist_bell"
-        android:layout_alignParentLeft="@id/hotlist_bell"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
-        android:padding="2dp"
-        android:background="@drawable/round_square"/>
+        android:minEms="2"
+        android:text="2" />
 </RelativeLayout>

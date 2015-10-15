@@ -1,9 +1,139 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.nxtlink.kaprika.fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/featured_slider"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+        </android.support.v4.view.ViewPager>
+
+        <ImageView
+            android:layout_marginLeft="19dp"
+            android:src="@drawable/shape_featured"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView" />
+
+        <ImageView
+            android:src="@drawable/button_previous"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/slider_previous" />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:src="@drawable/button_next"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/slider_next" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        style="@style/small_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fav_orders"
+        android:id="@+id/textView9" />
+
+    <RelativeLayout
+        android:background="@drawable/card_bg"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="72dp">
+        <LinearLayout
+            android:id="@+id/repeat_favourite_order"
+            android:padding="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_marginRight="11dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_repeat"/>
+            <TextView
+                style="@style/small_emphasized"
+                android:text="@string/repeat_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="123dp"
+            android:background="@color/neutral"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/button"
+        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_more"
+        android:id="@+id/view_favourites_orders" />
+    <TextView
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        style="@style/small_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/last_order"
+        android:id="@+id/textView19" />
+
+    <RelativeLayout
+        android:background="@drawable/card_background"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="72dp">
+        <LinearLayout
+            android:id="@+id/repeat_last_order"
+            android:padding="18dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_marginRight="11dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_repeat"/>
+            <TextView
+                style="@style/small_emphasized"
+                android:text="@string/repeat_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="123dp"
+            android:background="@color/neutral"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <TextView
+        style="@style/button"
+        android:padding="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_more"
+        android:id="@+id/view_all_orders" />
+
+</LinearLayout>

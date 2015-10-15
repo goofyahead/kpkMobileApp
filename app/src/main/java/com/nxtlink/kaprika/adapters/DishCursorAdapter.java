@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
@@ -61,6 +62,7 @@ public class DishCursorAdapter extends CursorAdapter {
         Picasso.with(context).load(new File(imagePath)).into(holder.dishImage);
 		holder.dishName.setText(cursor.getString(nameColumnIndex));
 		holder.dishPrice.setText(String.format( "%.2f", cursor.getFloat(priceColumnIndex)) +  " €");
+
         holder.addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,17 +70,25 @@ public class DishCursorAdapter extends CursorAdapter {
                 activityInterface.onDishAdded(currentDish);
             }
         });
+
+        holder.moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "more info about me");
+            }
+        });
 	}
 
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View created = inflater.inflate(R.layout.dish_card_item, null);
+		View created = inflater.inflate(R.layout.dish_item_square, null);
 		ViewHolder holder = new ViewHolder();
 		holder.dishImage = (ImageView) created.findViewById(R.id.dish_image);
 		holder.dishName = (TextView) created.findViewById(R.id.dish_name);
 		holder.dishPrice = (TextView) created.findViewById(R.id.dish_price);
-        holder.addToCart = (TextView) created.findViewById(R.id.add_to_cart);
+		holder.addToCart = (RelativeLayout) created.findViewById(R.id.add_to_cart_relative_button);
+		holder.moreInfo = (RelativeLayout) created.findViewById(R.id.more_info_relative_button);
 		created.setTag(holder);
 		return created;
 	}
@@ -96,6 +106,7 @@ public class DishCursorAdapter extends CursorAdapter {
 		private ImageView dishImage;
 		private TextView dishName;
 		private TextView dishPrice;
-		private TextView addToCart;
+		private RelativeLayout addToCart;
+		private RelativeLayout moreInfo;
 	}
 }

@@ -17,6 +17,7 @@ import com.nxtlink.kaprika.fragments.AddressFragment;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.fragments.FbLoginFragment;
+import com.nxtlink.kaprika.fragments.HomeFragment;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 import com.nxtlink.kaprika.volley.BitmapLruCache;
 
@@ -37,7 +38,8 @@ import retrofit.RestAdapter;
         CheckoutActivity.class,
         RegisterActivity.class,
         FbLoginFragment.class,
-        AddressFragment.class
+        AddressFragment.class,
+        HomeFragment.class
 },
         library = true)
 public class AndroidModule {

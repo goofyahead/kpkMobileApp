@@ -14,22 +14,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.DishCursorAdapter;
 import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 
+import java.util.LinkedList;
+
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.db.DataHelper;
 import kpklib.db.DbHelper;
+import kpklib.models.Category;
 import kpklib.providers.DishProvider;
 
 public class DishListViewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	@InjectView(R.id.dishGridView)
 	ListView dishListView;
+	@InjectView(R.id.selector_categories)
+	Spinner categorySelector;
+    @Inject
+    DataHelper dataHelper;
+
 	private OnDishSelectedListener mCallback;
     private AddToCart mCartCallback;
 	private DishCursorAdapter dishCursorAdapter;
@@ -90,14 +103,26 @@ public class DishListViewFragment extends Fragment implements LoaderManager.Load
 	@Override
 	public void onResume() {
 		super.onResume();
-		dishListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View arg1,
-                                    int position, long arg3) {
-                String dishId = (String) adapter.getItemAtPosition(position);
-                mCallback.onDishSelected(dishId);
-            }
-        });
+
+        LinkedList<Category> categories = dataHelper.getCategories();
+        String [] catNames = new String [categories.size()];
+
+        for (int x = 0; x < categories.size(); x++){
+            catNames[x] = categories.get(x).getName();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, catNames);
+
+        categorySelector.setAdapter(adapter);
+
+//		dishListView.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapter, View arg1,
+//                                    int position, long arg3) {
+//                String dishId = (String) adapter.getItemAtPosition(position);
+////                mCallback.onDishSelected(dishId); give callback to adapter an it will handle activity callback load fragment
+//            }
+//        });
 
         Log.d(TAG, "COUNT IS WHEN LIST IS LOADED: " + getFragmentManager().getBackStackEntryCount());
 	}

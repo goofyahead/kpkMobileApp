@@ -14,17 +14,18 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import kpklib.constants.Credentials;
 import kpklib.models.Dish;
 
 
 public class CarrouselAdapter extends PagerAdapter {
-    private ArrayList<Dish> elements;
+    private LinkedList<Dish> elements;
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public CarrouselAdapter(ArrayList<Dish> dishes, Context contex) {
+    public CarrouselAdapter(LinkedList<Dish> dishes, Context contex) {
         this.elements = dishes;
         this.mContext = contex;
         mInflater = LayoutInflater.from(contex);

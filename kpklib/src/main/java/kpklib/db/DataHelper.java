@@ -221,7 +221,6 @@ public class DataHelper {
 	public LinkedList<Dish> getDemoDishes(){
 		Cursor cursor = getDishCursor(DbHelper.DISH_DEMO, "1");
 		LinkedList<Dish> retrieved = new LinkedList<>();
-		Dish currentDish;
 		while(cursor.moveToNext()) {
 			String video = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_VIDEO));
 			String name = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_NAME));
