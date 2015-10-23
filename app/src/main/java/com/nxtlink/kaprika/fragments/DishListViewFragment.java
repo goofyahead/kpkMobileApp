@@ -104,16 +104,33 @@ public class DishListViewFragment extends Fragment implements LoaderManager.Load
 	public void onResume() {
 		super.onResume();
 
-        LinkedList<Category> categories = dataHelper.getCategories();
+        final LinkedList<Category> categories = dataHelper.getCategories();
         String [] catNames = new String [categories.size()];
 
         for (int x = 0; x < categories.size(); x++){
             catNames[x] = categories.get(x).getName();
         }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, catNames);
 
         categorySelector.setAdapter(adapter);
+
+		categorySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String newCatId = categories.get(position).getId();
+                Bundle cat = new Bundle();
+                cat.putString(CATEGORY_ID, newCatId);
+                getLoaderManager().restartLoader(0, cat, DishListViewFragment.this);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 //		dishListView.setOnItemClickListener(new OnItemClickListener() {
 //            @Override
@@ -128,11 +145,20 @@ public class DishListViewFragment extends Fragment implements LoaderManager.Load
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle bundle) {
 		categoryId = getArguments().getString(CATEGORY_ID);
 		Log.d(TAG, "category id " + categoryId);
+
 		Uri contentUri = Uri.withAppendedPath(DishProvider.CONTENT_URI, DbHelper.TABLE_CATEGORIES_JOIN_DISHES);
-		String[] args = { categoryId };
+
+        String[] args = new String[1];
+
+        if (bundle != null) {
+            args[0] = bundle.getString(CATEGORY_ID);
+        } else {
+            args[0] = categoryId;
+        }
+
 		return new CursorLoader(getActivity(), contentUri, null, DbHelper.TABLE_NAME_RELATED_CATEGORIES + "." +
 		DbHelper.RELATION_CAT_ID + "=?", args, DbHelper.DISH_NAME);
 	}

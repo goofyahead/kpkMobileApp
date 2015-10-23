@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.nxtlink.kaprika.activities.CheckoutActivity;
 import com.nxtlink.kaprika.activities.MainActivity;
 import com.nxtlink.kaprika.activities.RegisterActivity;
+import com.nxtlink.kaprika.adapters.DishCursorAdapter;
 import com.nxtlink.kaprika.fragments.AddressFragment;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
@@ -39,7 +40,8 @@ import retrofit.RestAdapter;
         RegisterActivity.class,
         FbLoginFragment.class,
         AddressFragment.class,
-        HomeFragment.class
+        HomeFragment.class,
+        DishCursorAdapter.class
 },
         library = true)
 public class AndroidModule {

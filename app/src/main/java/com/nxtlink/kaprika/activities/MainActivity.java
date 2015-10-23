@@ -32,6 +32,7 @@ import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -260,6 +261,23 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                         Log.d(TAG, "Dishes saved, getting images");
                     }
 
+                    api.getCategories(new Callback<List<Category>>() {
+                        @Override
+                        public void success(List<Category> categories, Response response) {
+                            for (Category category : categories) {
+                                dataHelper.saveCategory(category);
+                            }
+
+                            MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
+                            navigationOptions.setAdapter(menuAdapter);
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.d(TAG, error.getMessage());
+                        }
+                    });
+
                     Log.d(TAG, "done mark as updated now");
                     prefs.setLastUpdated(timeStampFromServer);
                 }
@@ -267,23 +285,6 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                 @Override
                 public void failure(RetrofitError error) {
                     Log.d(TAG, "Error " + error.getMessage());
-                }
-            });
-
-            api.getCategories(new Callback<List<Category>>() {
-                @Override
-                public void success(List<Category> categories, Response response) {
-                    for (Category category : categories) {
-                        dataHelper.saveCategory(category);
-                    }
-
-                    MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
-                    navigationOptions.setAdapter(menuAdapter);
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.d(TAG, error.getMessage());
                 }
             });
 
@@ -357,9 +358,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
 
     @Override
     public void onDishAdded(Dish dish) {
-        Log.d(TAG, "dish added " + dish.getName());
+        Log.d(TAG, "dish added " + dish.getName() + " options: " + dish.getOptions().keySet().toString());
         currentDishSelected = dish;
-        new SelectQuantityDialog().show(getFragmentManager(), "qtty");
+        SelectQuantityDialog.newInstance(dish).show(getFragmentManager(), "qtty");
     }
 
     private void updateCartCounter() {
@@ -372,12 +373,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     }
 
     @Override
-    public void quantitySelected(int quantity) {
+    public void quantitySelected(int quantity, HashMap<String, String> options) {
         if (quantity == 0) {
             currentDishSelected = null;
         } else {
             //add to order not just the number
-            currentCart.addItemToCart(currentDishSelected, quantity);
+            currentCart.addItemToCart(currentDishSelected, quantity, options);
             updateCartCounter();
         }
     }

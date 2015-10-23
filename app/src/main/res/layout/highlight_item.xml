@@ -3,12 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="200dp">
 
-
     <ImageView
+        android:src="@drawable/choco"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:id="@+id/highlight_dish_image" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_slider"
+        android:layout_alignParentBottom="true"
+        android:layout_height="90dp">
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -22,14 +30,14 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:maxEms="10"
-            style="@style/body_emphasized"
+            style="@style/body_emphasized_light_shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mejillones"
             android:id="@+id/highlight_dish_name" />
 
         <TextView
-            style="@style/small"
+            style="@style/small_light_shadow"
             android:ellipsize="end"
             android:maxLines="1"
             android:maxEms="15"
@@ -44,7 +52,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        style="@style/header_2_light"
+        style="@style/header_1_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="34$"

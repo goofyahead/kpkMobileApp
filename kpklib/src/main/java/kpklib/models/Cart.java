@@ -3,6 +3,7 @@ package kpklib.models;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -37,13 +38,14 @@ public class Cart implements Serializable{
         this.fbId = fbId;
     }
 
-    public void addItemToCart(Dish dishToAdd, int quantity){
+    public void addItemToCart(Dish dishToAdd, int quantity, HashMap<String, String> options){
         if (itemList.containsKey(dishToAdd.getId())){
             Log.d(TAG, "Cart already contains dish augmenting qty");
             CartItem current = itemList.get(dishToAdd.getId());
             current.setQuantity(current.getQuantity() + quantity);
+            current.setOptions(options);
         } else {
-            itemList.put(dishToAdd.getId(), new CartItem(dishToAdd, quantity));
+            itemList.put(dishToAdd.getId(), new CartItem(dishToAdd, quantity, options));
         }
     }
 

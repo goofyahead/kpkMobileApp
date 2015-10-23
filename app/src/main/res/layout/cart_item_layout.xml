@@ -1,54 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_margin="5dp"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:layout_marginLeft="21dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:padding="8dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cart_item_discard"/>
+
     <TextView
+        style="@style/button"
+        android:singleLine="true"
+        android:maxEms="8"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@id/cart_item_discard"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
+        android:text="Mejillones al vapor con suaves"
         android:id="@+id/cart_item_name" />
 
     <LinearLayout
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         android:layout_alignParentRight="true"
         android:orientation="horizontal"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:weightSum="4">
-
-        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/less"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"
-            android:layout_weight="1"
             android:id="@+id/cart_item_less" />
 
-        <EditText
-            android:layout_margin="5dp"
+        <TextView
+            style="@style/header_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="3"
-            android:layout_weight="1"
+            android:ems="2"
             android:gravity="center"
             android:text="1"
             android:id="@+id/cart_item_qty" />
 
-        <Button
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+"
-            android:layout_weight="1"
+            android:src="@drawable/more"
             android:id="@+id/cart_item_more" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="X"
-            android:layout_weight="1"
-            android:id="@+id/cart_item_discard" />
     </LinearLayout>
+
 
 </RelativeLayout>

@@ -9,32 +9,57 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
+import com.nxtlink.kaprika.adapters.OptionListAdapter;
+import com.nxtlink.kaprika.interfaces.OptionSelected;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
+
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import kpklib.models.Dish;
 
 /**
  * Created by goofyahead on 2/09/15.
  */
-public class SelectQuantityDialog extends DialogFragment {
+public class SelectQuantityDialog extends DialogFragment implements OptionSelected {
 
+    private static final String DISH = "DISH_ARGUMENT";
     @InjectView(R.id.qtty_dialog_count)
-    EditText quantityEditText;
+    TextView quantityEditText;
     @InjectView(R.id.qtty_dialog_less)
-    Button lessQty;
+    ImageView lessQty;
     @InjectView(R.id.qtty_dialog_more)
-    Button moreQty;
+    ImageView moreQty;
     @InjectView(R.id.qtty_accept)
-    Button acceptQtty;
+    TextView acceptQtty;
     @InjectView(R.id.qtty_cancel)
-    Button cancelQtty;
+    TextView cancelQtty;
+    @InjectView(R.id.quantity_dialog_item_name)
+    TextView itemName;
+    @InjectView(R.id.quantity_dialog_item_price_unity)
+    TextView priceUnit;
+    @InjectView(R.id.options_listView)
+    ListView optionsListView;
+
 
     private SelectQuantityInterface mCallback;
-
+    private HashMap<String, String> optionSelected = new HashMap<>();
     private int quantity = 1;
+    private Dish mDish;
+
+    public static SelectQuantityDialog newInstance(Dish myDish) {
+        SelectQuantityDialog f = new SelectQuantityDialog();
+        Bundle newBundle = new Bundle();
+        newBundle.putSerializable(DISH, myDish);
+        f.setArguments(newBundle);
+        return f;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -66,6 +91,18 @@ public class SelectQuantityDialog extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        mDish = (Dish) getArguments().getSerializable(DISH);
+
+        for (String cat : mDish.getOptions().keySet()){
+            optionSelected.put(cat, mDish.getOptions().get(cat).get(0));
+        }
+
+        optionsListView.setAdapter(new OptionListAdapter(mDish.getOptions(), getActivity(), this));
+
+        itemName.setText(mDish.getName());
+        priceUnit.setText(String.format(getActivity().getString(R.string.unitary_price), mDish.getPrice()));
+
         lessQty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +124,7 @@ public class SelectQuantityDialog extends DialogFragment {
         acceptQtty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.quantitySelected(quantity);
+                mCallback.quantitySelected(quantity, optionSelected);
                 SelectQuantityDialog.this.dismiss();
             }
         });
@@ -96,9 +133,14 @@ public class SelectQuantityDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 quantity = 0;
-                mCallback.quantitySelected(quantity);
+                mCallback.quantitySelected(quantity, null);
                 SelectQuantityDialog.this.dismiss();
             }
         });
+    }
+
+    @Override
+    public void optionSelected(String category, String selection) {
+        optionSelected.put(category, selection);
     }
 }

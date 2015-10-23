@@ -1,6 +1,7 @@
 package kpklib.models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by goofyahead on 3/09/15.
@@ -8,10 +9,20 @@ import java.io.Serializable;
 public class CartItem implements Serializable{
     private Dish item;
     private int quantity;
+    private HashMap<String, String> optionSelected = new HashMap<>();
 
-    public CartItem(Dish item, int quantity) {
+    public CartItem(Dish item, int quantity, HashMap<String, String> options) {
         this.item = item;
         this.quantity = quantity;
+        this.optionSelected = options;
+    }
+
+    public HashMap<String, String> getOptions() {
+        return optionSelected;
+    }
+
+    public void setOptions(HashMap<String, String> options) {
+        this.optionSelected = options;
     }
 
     public Dish getItem() {

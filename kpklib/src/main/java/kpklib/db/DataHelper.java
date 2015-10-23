@@ -10,7 +10,11 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import javax.inject.Inject;
@@ -96,6 +100,11 @@ public class DataHelper {
         requestVideo.allowScanningByMediaScanner();
         dm.enqueue(requestVideo);
 
+		// save options for dish
+		for (String options : dish.getOptions().keySet()){
+            saveOptionName(dish.getId(), options, dish.getOptions().get(options));
+		}
+
         /// save recommendations
 		for (Recommendation recommendation : dish.getRecommendations()){
             saveRelation(dish.getId(), recommendation.getId());
@@ -117,7 +126,18 @@ public class DataHelper {
         }
 	}
 
-	public LinkedList<Category> getCategories() {
+    private void saveOptionName(String dishId, String options, LinkedList<String> strings) {
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DbHelper.OPTION_DISH_ID, dishId);
+        values.put(DbHelper.OPTION_NAME, options + ":" + StringUtils.join(strings.toArray(), "|"));
+        db.insert(DbHelper.TABLE_OPTIONS_NAME, null, values);
+
+        db.close();
+    }
+
+    public LinkedList<Category> getCategories() {
 		LinkedList<Category> categories = new LinkedList<>();
 
 		SQLiteDatabase db = openHelper.getReadableDatabase();
@@ -208,18 +228,31 @@ public class DataHelper {
 	
 	public Cursor getDishCursor () {
 		SQLiteDatabase db = openHelper.getWritableDatabase();
+        db.close();
 		return db.query(DbHelper.TABLE_NAME_DISHES, null, null, null, null, null, DbHelper.DISH_NAME + " ASC");
 	}
 	
-	public Cursor getDishCursor (String selection, String args) {
-		SQLiteDatabase db = openHelper.getWritableDatabase();
-		final String SELECTION = selection + "=?";
-	    final String[] SELECTION_ARGS = {args};
-		return db.query(DbHelper.TABLE_NAME_DISHES, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.DISH_NAME + " ASC");
-	}
+//	public Cursor getDishCursor (String selection, String args) {
+//		SQLiteDatabase db = openHelper.getReadableDatabase();
+//		final String SELECTION = selection + "=?";
+//	    final String[] SELECTION_ARGS = {args};
+//		return db.query(DbHelper.TABLE_NAME_DISHES, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.DISH_NAME + " ASC");
+//	}
+
+//    public Cursor getOptionsCursor (String selection, String args) {
+//        SQLiteDatabase db = openHelper.getReadableDatabase();
+//        final String SELECTION = selection + "=?";
+//        final String[] SELECTION_ARGS = {args};
+//        return db.query(DbHelper.TABLE_OPTIONS_NAME, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.OPTION_NAME + " ASC");
+//    }
 
 	public LinkedList<Dish> getDemoDishes(){
-		Cursor cursor = getDishCursor(DbHelper.DISH_DEMO, "1");
+
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        final String SELECTION = DbHelper.DISH_DEMO + "=?";
+        final String[] SELECTION_ARGS = {"1"};
+        Cursor cursor = db.query(DbHelper.TABLE_NAME_DISHES, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.DISH_NAME + " ASC");
+
 		LinkedList<Dish> retrieved = new LinkedList<>();
 		while(cursor.moveToNext()) {
 			String video = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_VIDEO));
@@ -229,17 +262,25 @@ public class DataHelper {
 			String id = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_ID));
 			String image = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_IMAGE));
 			boolean demo = cursor.getInt(cursor.getColumnIndex(DbHelper.DISH_DEMO)) == 0 ? false : true;
-			retrieved.add(new Dish(id, name, description, price, image, video, demo, null, null, null, null));
+			retrieved.add(new Dish(id, name, description, price, image, video, demo));
 		}
+
+		cursor.close();
+        db.close();
 		return retrieved;
 	}
 
 	public Dish getDishById (String id) {
-		return getDishFromCursor(getDishCursor(DbHelper.DISH_ID, id));
+		return getDishFromCursor(id);
 	}
 	
-	private Dish getDishFromCursor (Cursor cursor) {
-		Dish searchedDish = null;
+	private Dish getDishFromCursor (String dishId) {
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        final String SELECTION = DbHelper.DISH_ID + "=?";
+        final String[] SELECTION_ARGS = {dishId};
+        Cursor cursor = db.query(DbHelper.TABLE_NAME_DISHES, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.DISH_NAME + " ASC");
+
+        Dish searchedDish = null;
 		 if (cursor.moveToNext()) {
 			 String video = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_VIDEO));
 			 String name = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_NAME));
@@ -251,8 +292,41 @@ public class DataHelper {
 			 searchedDish = new Dish(id, name, description, price, image, video, demo, null, null, null, null);
 		 }
 		cursor.close();
+        db.close();
+
+        searchedDish.setOptions(getOptions(searchedDish));
+
 		return searchedDish;
 	}
+
+    private LinkedHashMap<String, LinkedList<String>> getOptions(Dish searchedDish) {
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        final String SELECTION = DbHelper.OPTION_DISH_ID + "=?";
+        final String[] SELECTION_ARGS = {searchedDish.getId()};
+        Cursor optionsCursor = db.query(DbHelper.TABLE_OPTIONS_NAME, null, SELECTION, SELECTION_ARGS, null, null, DbHelper.OPTION_NAME + " ASC");
+
+
+        LinkedHashMap<String, LinkedList<String>> hashmap = new LinkedHashMap<>();
+
+        while (optionsCursor.moveToNext()){
+            // add option with parsed text
+            String optionString = optionsCursor.getString(optionsCursor.getColumnIndex(DbHelper.OPTION_NAME));
+            LinkedList<String> elementOptions = new LinkedList<>();
+            String elements [] = optionString.split(":");
+            String optionName = elements[0];
+            String selection = elements[1];
+            String optionsTokenized [] = selection.split("\\|");
+            for (String option : optionsTokenized) {
+                elementOptions.add(option);
+            }
+            hashmap.put(optionName, elementOptions );
+        }
+
+        optionsCursor.close();
+        db.close();
+
+        return hashmap;
+    }
 
 
 }

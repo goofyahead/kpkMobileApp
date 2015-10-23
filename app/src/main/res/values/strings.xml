@@ -11,9 +11,9 @@
     <string name="favourite">Favourite</string>
     <string name="delivery">Add to cart</string>
     <string name="cart">Order</string>
-    <string name="dialog_quantity_accept">OK</string>
+    <string name="dialog_quantity_accept">AÑADIR</string>
     <string name="dialog_quantity_title">Cuantos quieres?</string>
-    <string name="dialog_quantity_cancel">Cancelar</string>
+    <string name="dialog_quantity_cancel">CANCELAR</string>
     <string name="title_activity_checkout">CheckoutActivity</string>
     <string name="checkout_buy">Comprar</string>
     <string name="checkout_discard">Volver</string>
@@ -22,6 +22,7 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="your_profile">Tu perfil</string>
     <string name="facebook_app_id">1656535217926775</string>
+    <string name="unitary_price">%1.2f € / ud.</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -59,5 +60,6 @@
     <string name="repeat_button">Repetir</string>
     <string name="more_info">MAS INFO</string>
     <string name="add">AÑADIR</string>
+    <string name="add_to_cart_dialog">Añadir al carrito</string>
 
 </resources>

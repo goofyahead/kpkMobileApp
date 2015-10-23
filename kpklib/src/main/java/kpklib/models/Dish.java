@@ -3,6 +3,8 @@ package kpklib.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 public class Dish implements Serializable{
@@ -19,6 +21,7 @@ public class Dish implements Serializable{
 	private LinkedList<Ingredient> ingredients;
 	private LinkedList<Tag> tags;
     private LinkedList<Recommendation> recommendations;
+    private LinkedHashMap<String, LinkedList<String>> options;
 
     public Dish(String id, String name, String description, float price, String picture, String video, boolean demo, LinkedList<Category> categories, LinkedList<Ingredient> ingredients, LinkedList<Tag> tags, LinkedList<Recommendation> recommendations) {
         this.id = id;
@@ -32,6 +35,24 @@ public class Dish implements Serializable{
         this.ingredients = ingredients;
         this.tags = tags;
         this.recommendations = recommendations;
+    }
+
+    public Dish(String id, String name, String description, float price, String picture, String video, boolean demo) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.picture = picture;
+        this.video = video;
+        this.demo = demo;
+    }
+
+    public LinkedHashMap<String, LinkedList<String>> getOptions() {
+        return options;
+    }
+
+    public void setOptions(LinkedHashMap <String, LinkedList<String>> options) {
+        this.options = options;
     }
 
     public String getId() {

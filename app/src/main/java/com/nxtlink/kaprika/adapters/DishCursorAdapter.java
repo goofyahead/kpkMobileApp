@@ -13,14 +13,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
+import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
 import kpklib.constants.Credentials;
+import kpklib.db.DataHelper;
 import kpklib.db.DbHelper;
 import kpklib.models.Dish;
+import kpklib.providers.DishProvider;
 
 public class DishCursorAdapter extends CursorAdapter {
     private static final String TAG = DishCursorAdapter.class.getName();
@@ -33,8 +38,13 @@ public class DishCursorAdapter extends CursorAdapter {
     private AddToCart activityInterface;
     private int descriptionColumnIndex;
 
+	@Inject
+    DataHelper dataHelper;
+
     public DishCursorAdapter(Context context, AddToCart iface) {
 		super(context, null, false);
+
+        ((KaprikaApplication) context.getApplicationContext()).inject(this);
 		mContext = context;
 		inflater = LayoutInflater.from(context);
         activityInterface = iface;
@@ -55,8 +65,10 @@ public class DishCursorAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
-        final Dish currentDish = new Dish(cursor.getString(indexColumnIndex), cursor.getString(nameColumnIndex), cursor.getString(descriptionColumnIndex),
-                cursor.getFloat(priceColumnIndex), cursor.getString(imageColumIndex), null, false, null, null, null, null);
+//        final Dish currentDish = new Dish(cursor.getString(indexColumnIndex), cursor.getString(nameColumnIndex), cursor.getString(descriptionColumnIndex),
+//                cursor.getFloat(priceColumnIndex), cursor.getString(imageColumIndex), null, false, null, null, null, null);
+
+		final Dish currentDish = dataHelper.getDishById(cursor.getString(indexColumnIndex));
         String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath() + Credentials.FOLDER_KPK_PICTURES + cursor.getString(imageColumIndex);
         Log.d(TAG, "imagePath; " + imagePath);
         Picasso.with(context).load(new File(imagePath)).into(holder.dishImage);

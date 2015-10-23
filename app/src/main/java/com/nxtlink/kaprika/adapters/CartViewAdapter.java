@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nxtlink.kaprika.R;
@@ -51,10 +52,10 @@ public class CartViewAdapter  extends BaseAdapter {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.cart_item_layout, null);
             holder.name = (TextView) convertView.findViewById(R.id.cart_item_name);
-            holder.discard = (Button) convertView.findViewById(R.id.cart_item_discard);
-            holder.more = (Button) convertView.findViewById(R.id.cart_item_more);
-            holder.less = (Button) convertView.findViewById(R.id.cart_item_less);
-            holder.quantity = (EditText) convertView.findViewById(R.id.cart_item_qty);
+            holder.discard = (ImageView) convertView.findViewById(R.id.cart_item_discard);
+            holder.more = (ImageView) convertView.findViewById(R.id.cart_item_more);
+            holder.less = (ImageView) convertView.findViewById(R.id.cart_item_less);
+            holder.quantity = (TextView) convertView.findViewById(R.id.cart_item_qty);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -97,9 +98,9 @@ public class CartViewAdapter  extends BaseAdapter {
 
     private class ViewHolder {
         private TextView name;
-        private EditText quantity;
-        private Button more;
-        private Button less;
-        private Button discard;
+        private TextView quantity;
+        private ImageView more;
+        private ImageView less;
+        private ImageView discard;
     }
 }

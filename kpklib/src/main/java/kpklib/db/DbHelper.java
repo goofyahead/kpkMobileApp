@@ -48,10 +48,19 @@ public class DbHelper extends SQLiteOpenHelper{
 	public static final String INGREDIENT_NAME = "INGREDIENT_NAME";
 	public static final String INGREDIENT_DESCRIPTION = "INGREDIENT_DESCRIPTION";
 
+	public static final String TABLE_OPTIONS_NAME = "OPTIONS_TABLE";
+	public static final String OPTION_DISH_ID = "OPTIONS_DISH_ID";
+    public static final String OPTION_NAME = "OPTION_NAME";
+
 	public static final String TABLE_TAGS_NAME = "TAGS_TABLE";
 	public static final String TAG_ID = "TAG_ID";
 	public static final String TAG_NAME = "TAG_NAME";
 	public static final String TAG_DESCRIPTION = "TAG_DESCRIPTION";
+
+    public static final String CREATE_OPTIONS_REL = "CREATE TABLE "
+            + TABLE_OPTIONS_NAME + " ("
+            + OPTION_DISH_ID + " TEXT, "
+            + OPTION_NAME + " TEXT )";
 
 	public static final String CREATE_DISHES = "CREATE TABLE "
             + TABLE_NAME_DISHES + " ("
@@ -116,6 +125,7 @@ public class DbHelper extends SQLiteOpenHelper{
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "creating database");
 		db.execSQL(DbHelper.CREATE_CATEGORIES);
+        db.execSQL(DbHelper.CREATE_OPTIONS_REL);
 		db.execSQL(DbHelper.CREATE_DISHES);
 		db.execSQL(DbHelper.CREATE_INGREDIENTS);
 		db.execSQL(DbHelper.CREATE_RELATIONS);
@@ -128,6 +138,7 @@ public class DbHelper extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.d(TAG, "Upgrading database, this will drop tables and recreate");
+        db.execSQL("DROP TABLE IF EXISTS " + DbHelper.CREATE_OPTIONS_REL);
         db.execSQL("DROP TABLE IF EXISTS " + DbHelper.CREATE_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + DbHelper.CREATE_DISHES);
         db.execSQL("DROP TABLE IF EXISTS " + DbHelper.CREATE_INGREDIENTS);
