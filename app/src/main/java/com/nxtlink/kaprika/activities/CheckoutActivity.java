@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.braintreepayments.api.dropin.BraintreePaymentActivity;
@@ -34,10 +35,15 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
 
     public static final String PAYLOAD = "PAYLOAD";
     public static final String TOKEN = "TOKEN";
+    public static final String DELIVERY = "DELIVERY";
+    public static final String PICK_UP = "PICK_UP";
     private static final int RESULT_BACK_TO_BUY = 12345;
+    private static final float MINIMUM_ORDER = 12;
     private static final String TAG = CheckoutActivity.class.getName();
     private static final int REQUEST_CODE = 112;
     private Cart mCart;
+    private String deliveryOption;
+
 
 
     @InjectView(R.id.cart_item_list)
@@ -48,6 +54,14 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
     Button checkoutDiscard;
     @InjectView(R.id.checkout_price_sum)
     TextView cartSum;
+    @InjectView(R.id.pick_up_button)
+    Button pickUp;
+    @InjectView(R.id.take_away_button)
+    Button takeAway;
+    @InjectView(R.id.alert_view)
+    RelativeLayout alertView;
+    @InjectView(R.id.minimun_order)
+    TextView minimumOrder;
 
     @Inject
     KaprikaApiInterface api;
@@ -63,10 +77,13 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
 
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
-        mCart = (Cart) getIntent().getSerializableExtra(PAYLOAD);;
+        mCart = (Cart) getIntent().getSerializableExtra(PAYLOAD);
+        mCart.setDeliveryOption(DELIVERY);
         cartListView.setAdapter(new CartViewAdapter(this, mCart, this));
 
-        cartSum.setText(String.format("%.2f", mCart.getTotal()));
+        minimumOrder.setText(String.format(getResources().getString(R.string.minimun_order), MINIMUM_ORDER));
+
+        cartSum.setText(String.format("%.2f €", mCart.getTotal()));
 
         checkoutDiscard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,11 +109,36 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
                 checkoutBuy.setEnabled(true);
                 token = accessToken.getAccessToken();
                 Log.d(TAG, "Token retrieved " + token);
+                checkMinimun();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d(TAG, "ERROR GETTING TOKEN FOR TS " + error.getMessage());
+            }
+        });
+
+        pickUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCart.setDeliveryOption(PICK_UP);
+                takeAway.setBackground(getResources().getDrawable(R.drawable.custom_btn_outline_gray));
+                takeAway.setTextColor(getResources().getColor(R.color.neutral));
+
+                pickUp.setBackground(getResources().getDrawable(R.drawable.custom_btn_outline_orange));
+                pickUp.setTextColor(getResources().getColor(R.color.error));
+            }
+        });
+
+        takeAway.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCart.setDeliveryOption(DELIVERY);
+                takeAway.setBackground(getResources().getDrawable(R.drawable.custom_btn_outline_orange));
+                takeAway.setTextColor(getResources().getColor(R.color.error));
+
+                pickUp.setBackground(getResources().getDrawable(R.drawable.custom_btn_outline_gray));
+                pickUp.setTextColor(getResources().getColor(R.color.neutral));
             }
         });
     }
@@ -144,8 +186,20 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated{
     @Override
     public void updatedCart(Cart updatedCart) {
         this.mCart = updatedCart;
-        cartSum.setText(String.format( "%.2f", mCart.getTotal()));
+        cartSum.setText(String.format( "%.2f €", mCart.getTotal()));
         // update total, etc
+
+        checkMinimun();
+    }
+
+    private void checkMinimun() {
+        if (mCart.getTotal() >= MINIMUM_ORDER) {
+            alertView.setVisibility(View.GONE);
+            checkoutBuy.setEnabled(true);
+        } else {
+            alertView.setVisibility(View.VISIBLE);
+            checkoutBuy.setEnabled(false);
+        }
     }
 
     @Override

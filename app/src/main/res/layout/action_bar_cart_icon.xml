@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@android:style/Widget.ActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_gravity="center"
     android:clickable="true"
-    style="@android:style/Widget.ActionButton">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/hotlist_bell"
-        android:src="@drawable/icon_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/cart"
         android:gravity="center"
         android:padding="4dp"
-        android:contentDescription="@string/cart"
-        />
+        android:src="@drawable/icon_cart" />
 
     <TextView
-        style="@style/button"
         android:id="@+id/cart_count"
-        android:layout_marginLeft="4dp"
+        style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
         android:gravity="center"
         android:minEms="2"
         android:text="2" />

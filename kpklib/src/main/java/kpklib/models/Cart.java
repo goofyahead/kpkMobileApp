@@ -15,11 +15,35 @@ public class Cart implements Serializable{
     private LinkedHashMap<String, CartItem> itemList;
     private String nonce;
     private String fbId;
+    private String deliveryOption;
+    private String status;
+    private String timestamp;
+    private String amount;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
 
     public Cart(String nonce, String fbId) {
         this.itemList = new LinkedHashMap<>();
         this.fbId = fbId;
         this.nonce = nonce;
+    }
+
+    public String getDeliveryOption() {
+        return deliveryOption;
+    }
+
+    public void setDeliveryOption(String deliveryOption) {
+        this.deliveryOption = deliveryOption;
     }
 
     public String getNonce() {

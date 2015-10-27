@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
+    android:layout_height="wrap_content"
     android:minHeight="49dp"
-    android:layout_height="wrap_content">
+    android:orientation="horizontal">
 
     <ImageView
-        android:layout_centerVertical="true"
-        android:src="@drawable/icon_featured"
+        android:id="@+id/category_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="19dp"
-        android:id="@+id/category_image" />
+        android:src="@drawable/icon_featured" />
 
     <TextView
-        android:layout_marginLeft="28dp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/category_image"
-        android:textColor="@color/nowfie_lighter_gray"
         android:id="@+id/categories_item_name"
+        style="@style/body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="28dp"
+        android:layout_toRightOf="@id/category_image"
         android:text="TextView" />
 
     <TextView
-        android:layout_marginRight="24dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:background="@drawable/badge_circle"
+        android:id="@+id/badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2"
-        android:id="@+id/badge" />
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/badge_circle"
+        android:gravity="center"
+        android:text="2" />
 
 
 </RelativeLayout>

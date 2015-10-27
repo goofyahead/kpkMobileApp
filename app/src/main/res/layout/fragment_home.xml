@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.nxtlink.kaprika.fragments.HomeFragment">
+    tools:context="com.nxtlink.kaprika.fragments.HomeFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,123 +12,170 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/featured_slider"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </android.support.v4.view.ViewPager>
+            android:layout_height="200dp"/>
 
         <ImageView
-            android:src="@drawable/button_previous"
-            android:layout_centerVertical="true"
+            android:id="@+id/slider_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/slider_previous" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/button_previous" />
 
         <ImageView
+            android:id="@+id/slider_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/button_next"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/slider_next" />
+            android:src="@drawable/button_next" />
     </RelativeLayout>
 
     <TextView
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:id="@+id/textView9"
         style="@style/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fav_orders"
-        android:id="@+id/textView9" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="8dp"
+        android:text="@string/fav_orders" />
 
     <RelativeLayout
-        android:background="@drawable/card_bg"
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="72dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/card_bg">
+
+        <LinearLayout
+            android:layout_marginLeft="12dp"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/body_emphasized"
+                android:text="Mi partido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="4dp"
+                android:text="2 x hamburguesas de pollo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
         <LinearLayout
             android:id="@+id/repeat_favourite_order"
-            android:padding="18dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:padding="18dp">
+
             <ImageView
-                android:layout_marginRight="11dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_repeat"/>
+                android:layout_marginRight="11dp"
+                android:src="@drawable/icon_repeat" />
+
             <TextView
                 style="@style/small_emphasized"
-                android:text="@string/repeat_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/repeat_button" />
         </LinearLayout>
+
         <View
+            android:id="@+id/separator_fav"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="123dp"
-            android:background="@color/neutral"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"/>
+            android:background="@color/neutral" />
 
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/view_favourites_orders"
         style="@style/button"
-        android:padding="10dp"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_more"
-        android:id="@+id/view_favourites_orders" />
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="@string/view_more" />
+
     <TextView
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:id="@+id/textView19"
         style="@style/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/last_order"
-        android:id="@+id/textView19" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="@string/last_order" />
 
     <RelativeLayout
-        android:background="@drawable/card_background"
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="72dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/card_bg">
+
         <LinearLayout
-            android:id="@+id/repeat_last_order"
-            android:padding="18dp"
+            android:layout_marginLeft="12dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_marginRight="11dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_repeat"/>
+            android:layout_height="wrap_content">
+
             <TextView
-                style="@style/small_emphasized"
-                android:text="@string/repeat_button"
+                android:id="@+id/last_order_date"
+                style="@style/body_emphasized"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/last_order_first_line"
+                android:layout_marginTop="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/repeat_last_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:padding="18dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="11dp"
+                android:src="@drawable/icon_repeat" />
+
+            <TextView
+                style="@style/small_emphasized"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/repeat_button" />
+        </LinearLayout>
+
         <View
+            android:id="@+id/separator_last"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_marginRight="123dp"
-            android:background="@color/neutral"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"/>
+            android:background="@color/neutral" />
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/view_all_orders"
         style="@style/button"
-        android:padding="10dp"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_more"
-        android:id="@+id/view_all_orders" />
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="@string/view_more" />
 
 </LinearLayout>

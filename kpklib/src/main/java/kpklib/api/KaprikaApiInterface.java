@@ -1,6 +1,7 @@
 package kpklib.api;
 
 
+import java.util.LinkedList;
 import java.util.List;
 
 import kpklib.models.AccessToken;
@@ -13,12 +14,22 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 
 
 /**
  * Created by goofyahead on 9/8/14.
  */
 public interface KaprikaApiInterface {
+
+    @GET("/api/clientFavOrders/fb/{fbId}")
+    void getClientFavOrders(@Path("fbId") String fbId, Callback<LinkedList<Cart>> orders);
+
+    @GET("/api/clientHistoryOrders/fb/{fbId}")
+    void getClientHistoryOrders(@Path("fbId") String fbId, Callback<LinkedList<Cart>> orders);
+
+    @GET("/api/clientActiveOrders/fb/{fbId}")
+    void getClientActiveOrders(@Path("fbId") String fbId, Callback<LinkedList<Cart>> orders);
 
     @GET("/api/ordersToPrint")
     void getOrdersToPrint(Callback<PrintableOrder> order);

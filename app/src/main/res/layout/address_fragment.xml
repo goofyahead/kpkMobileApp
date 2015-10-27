@@ -1,96 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/street_name"
-            android:id="@+id/textView4" />
+            android:text="@string/street_name" />
 
         <EditText
-            android:hint="@string/hint_street"
+            android:id="@+id/address_street"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/address_street" />
+            android:hint="@string/hint_street" />
 
         <TextView
-            android:layout_marginTop="10dp"
+            android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/number_flat_door"
-            android:id="@+id/textView5" />
+            android:layout_marginTop="10dp"
+            android:text="@string/number_flat_door" />
 
         <EditText
-            android:hint="@string/hint_number_floor"
+            android:id="@+id/address_floor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/address_floor" />
+            android:hint="@string/hint_number_floor" />
+
         <TextView
-            android:layout_marginTop="10dp"
+            android:id="@+id/contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/phone_number"
-            android:id="@+id/contact" />
+            android:layout_marginTop="10dp"
+            android:text="@string/phone_number" />
 
         <EditText
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:hint="@string/hint_phone_number"
             android:inputType="phone"
-            android:minEms="5"
             android:maxEms="5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/phone" />
+            android:minEms="5" />
+
         <TextView
-            android:layout_marginTop="10dp"
+            android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/postal_code"
-            android:id="@+id/textView6" />
+            android:layout_marginTop="10dp"
+            android:text="@string/postal_code" />
 
         <EditText
+            android:id="@+id/address_postal_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:hint="@string/hint_postal_code"
             android:inputType="number"
-            android:minEms="5"
             android:maxEms="5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/address_postal_code" />
+            android:minEms="5" />
 
         <TextView
-            android:layout_marginTop="10dp"
+            android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/special_indications"
-            android:id="@+id/textView7" />
+            android:layout_marginTop="10dp"
+            android:text="@string/special_indications" />
 
         <EditText
-            android:hint="@string/hint_special_indications"
+            android:id="@+id/adress_extra_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionDone"
-            android:id="@+id/adress_extra_info" />
+            android:hint="@string/hint_special_indications"
+            android:imeOptions="actionDone" />
 
     </LinearLayout>
 
     <Button
-        android:background="@drawable/custom_btn_blue"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/finish_register"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="@string/finish_registration"
-        android:id="@+id/finish_register" />
+        android:background="@drawable/custom_btn_outline_orange"
+        android:text="@string/finish_registration" />
 
 </RelativeLayout>

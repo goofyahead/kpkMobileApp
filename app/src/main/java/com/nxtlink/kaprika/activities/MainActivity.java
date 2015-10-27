@@ -27,7 +27,9 @@ import com.nxtlink.kaprika.dialogs.SelectQuantityDialog;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.fragments.HomeFragment;
+import com.nxtlink.kaprika.fragments.OrdersFragment;
 import com.nxtlink.kaprika.interfaces.AddToCart;
+import com.nxtlink.kaprika.interfaces.LoadCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
 
@@ -49,7 +51,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity implements Callback<Integer>, DishListViewFragment.OnDishSelectedListener, AddToCart, SelectQuantityInterface {
+public class MainActivity extends AppCompatActivity implements Callback<Integer>, DishListViewFragment.OnDishSelectedListener, AddToCart, SelectQuantityInterface, LoadCart {
 
     private static String TAG = MainActivity.class.getName();
 
@@ -133,12 +135,36 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
 
         drawerLayout.setDrawerListener(mDrawerToggle);
 
-        mTitle = getResources().getString(R.string.categories);
+        mTitle = getResources().getString(R.string.nav_home);
         getSupportActionBar().setTitle(mTitle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        profileListOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                switch (position) {
+                    case 0:
+                        HomeFragment home = HomeFragment.newInstance();
+                        ft.replace(R.id.fragment_holder, home);
+                        ft.commit();
+                        break;
+                    case 1:
+                        OrdersFragment dlView = OrdersFragment.newInstance();
+                        ft.replace(R.id.fragment_holder, dlView);
+                        ft.commit();
+                        break;
+                }
+                mTitle = ((MenuDrawerCategory) profileListOptions.getAdapter().getItem(position)).getCategoryName();
+
+                profileListOptions.setItemChecked(position, true);
+                drawerLayout.closeDrawer(drawerHolder);
+
+                getSupportActionBar().setTitle(mTitle);
+            }
+        });
         navigationOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -382,4 +408,11 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
             updateCartCounter();
         }
     }
+
+    @Override
+    public void loadCart(Cart cart) {
+        currentCart = cart;
+        updateCartCounter();
+    }
+
 }

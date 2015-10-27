@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="secondary">#737373</color>
-    <color name="primary">#4a4a4a</color>
-    <color name="tertiary">#9c9c9c</color>
+    <color name="secondary">#f4f4f4</color>
+    <color name="primary">#323232</color>
     <color name="neutral">#d8d8d8</color>
     <color name="light_darker">#fafafa</color>
     <color name="success">#7ed321</color>
-    <color name="error">#d0021b</color>
+    <color name="error">#e56141</color>
     <color name="warning_light">#f8e71c</color>
     <color name="success_dark">#417505</color>
     <color name="error_dark">#94090d</color>
     <color name="success_light">#b8e986</color>
-    <color name="error_light">#ff5b5b</color>
+    <color name="error_light">#efad9d</color>
     <color name="light">#ffffff</color>
     <color name="shadow">#99494949</color>
     <color name="neutral_darker">#ececec</color>
@@ -22,23 +21,7 @@
     <color name="navbar">#000000</color>
     <color name="status_bar_icon_translucent">#4dffffff</color>
     <color name="status_bar_icon">#e6ffffff</color>
-    <color name="background">#6CD1EA</color>
-    <color name="gray">#C6C6C6</color>
-    <color name="white">#FFFFFF</color>
-    <color name="error_red">#AAFF0000</color>
-    <color name="dark_red">#aaba0000</color>
-    <color name="green">#00FF00</color>
-    <color name="black">#000000</color>
-    <color name="info_blue">#ff3fc4d5</color>
-    <color name="nowfie_dark_purple">#4A2F57</color>
-    <color name="nowfie_purple">#67337F</color>
-    <color name="nowfie_light_purple">#B669D4</color>
-    <color name="nowfie_whitee">#FFFFFF</color>
-    <color name="nowfie_green">#70CC97</color>
-    <color name="nowfie_gray">#646464</color>
-    <color name="nowfie_light_gray">#8A8A8A</color>
-    <color name="nowfie_lighter_gray">#ACACAC</color>
-    <color name="nowfie_black">#313131</color>
+    <color name="tertiary">#99232323</color>
 
     <!-- circle pager indicator -->
     <color name="circle_empty">#FFA3A3A3</color>

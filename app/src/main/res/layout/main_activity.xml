@@ -7,35 +7,37 @@
         android:id="@+id/content_frame"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
         <FrameLayout
             android:id="@+id/fragment_holder"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
     </RelativeLayout>
 
     <!-- The navigation drawer -->
     <RelativeLayout
-        android:clickable="true"
-        android:background="@color/light_darker"
         android:id="@+id/left_drawer"
-        android:layout_gravity="start"
         android:layout_width="300dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/light_darker"
+        android:clickable="true">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <include
+                layout="@layout/profile_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/profile_layout"/>
-            <include android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/navigation_layout"/>
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/navigation_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

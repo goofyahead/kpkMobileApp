@@ -17,12 +17,13 @@
     <string name="title_activity_checkout">CheckoutActivity</string>
     <string name="checkout_buy">Comprar</string>
     <string name="checkout_discard">Volver</string>
-    <string name="checkout_total_amout">Total a pagar:</string>
+    <string name="checkout_total_amout">TOTAL</string>
     <string name="your_purchase">Tu compra</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="your_profile">Tu perfil</string>
     <string name="facebook_app_id">1656535217926775</string>
     <string name="unitary_price">%1.2f € / ud.</string>
+    <string name="price_euro">%1.2f €</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -61,5 +62,14 @@
     <string name="more_info">MAS INFO</string>
     <string name="add">AÑADIR</string>
     <string name="add_to_cart_dialog">Añadir al carrito</string>
+    <string name="delivery_option">DOMICILIO</string>
+    <string name="pick_up_option">RECOGER</string>
+    <string name="minimun_order">Pedido minimo %1.2f €</string>
+    <string name="orders_active">ACTIVOS</string>
+    <string name="orders_history">ULTIMOS</string>
+    <string name="orders_fav">FAVORITOS</string>
+    <string name="add_to_fav">AÑADIR A FAVORITOS</string>
+    <string name="order_line">%1$d x %2$s</string>
+    <string name="here_will_be_last_orders">Aqui aparece tu ultimo pedido</string>
 
 </resources>

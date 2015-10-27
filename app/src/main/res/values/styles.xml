@@ -4,6 +4,37 @@
         <item name="android:colorBackground">@color/light_darker</item>
     </style>
 
+    <style name="searchEditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textAppearance">@style/button_light</item>
+    </style>
+
+    <style name="orangeTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/error</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">@color/dark_darker</item>
+        <item name="tabTextAppearance">@style/button_light</item>
+        <item name="tabSelectedTextColor">@color/status_bar_icon</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="orangeSpinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">@color/error</item>
+        <item name="android:dropDownSelector">@drawable/icon_dropdown_arrow_down_light</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <style name="SpinnerItemTheme" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/light</item>
+    </style>
+
     <style name="header_1_light" parent="@android:style/TextAppearance">
         <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">sans-serif-light</item>

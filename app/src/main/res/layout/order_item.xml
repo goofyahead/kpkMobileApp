@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/card_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@color/error">
+
+        <TextView
+            style="@style/button_light"
+            android:id="@+id/order_type_delivery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="A RECOGER" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+        <TextView
+            android:text="Hoy"
+            android:id="@+id/order_date"
+            style="@style/body_emphasized"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_alignParentRight="true"
+            style="@style/small"
+            android:id="@+id/order_time"
+            android:text="16:32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/order_amount"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            style="@style/header_3"
+            android:text="32€"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/order_date"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/order_first_line"
+                style="@style/small"
+                android:text="4 x Hamburguesa de pollo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/small"
+                android:id="@+id/order_second_line"
+                android:layout_marginTop="8dp"
+                android:text="2x Mejillones al vapor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                style="@style/small"
+                android:layout_marginTop="8dp"
+                android:text="..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/neutral"/>
+    <RelativeLayout
+        android:id="@+id/order_to_fav_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/icon_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="12dp"
+                style="@style/button"
+                android:text="@string/add_to_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

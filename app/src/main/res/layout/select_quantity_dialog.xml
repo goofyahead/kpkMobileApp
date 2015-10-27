@@ -1,119 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="280dp"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center_horizontal"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <TextView
-        android:layout_marginTop="24dp"
+        android:id="@+id/textView3"
+        style="@style/body_emphasized"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/body_emphasized"
-        android:text="@string/add_to_cart_dialog"
         android:layout_gravity="center"
-        android:id="@+id/textView3" />
+        android:layout_marginTop="24dp"
+        android:text="@string/add_to_cart_dialog" />
 
     <RelativeLayout
-        android:layout_margin="24dp"
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:gravity="center_vertical">
 
         <LinearLayout
-            android:layout_marginTop="24dp"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
+
             <TextView
-                style="@style/button"
                 android:id="@+id/quantity_dialog_item_name"
-                android:singleLine="true"
-                android:maxEms="7"
-                android:text="Mejillones al vaporessssssss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
                 style="@style/button"
-                android:id="@+id/quantity_dialog_item_price_unity"
-                android:text="2e/ud"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxEms="7"
+                android:singleLine="true"
+                android:text="Mejillones al vaporessssssss" />
+
+            <TextView
+                android:id="@+id/quantity_dialog_item_price_unity"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2e/ud" />
         </LinearLayout>
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_marginTop="24dp"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <ImageView
-                android:src="@drawable/less"
+                android:id="@+id/qtty_dialog_less"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/qtty_dialog_less" />
+                android:src="@drawable/icon_decrease" />
 
             <TextView
+                android:id="@+id/qtty_dialog_count"
                 style="@style/header_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="2"
                 android:gravity="center"
-                android:text="1"
-                android:id="@+id/qtty_dialog_count" />
+                android:text="1" />
 
             <ImageView
+                android:id="@+id/qtty_dialog_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/more"
-                android:id="@+id/qtty_dialog_more" />
+                android:src="@drawable/icon_increase" />
         </LinearLayout>
 
 
     </RelativeLayout>
 
     <ListView
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
         android:id="@+id/options_listView"
         android:layout_width="wrap_content"
-        android:layout_height="200dp">
+        android:layout_height="200dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp">
 
     </ListView>
 
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginTop="24dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/qtty_cancel"
             style="@style/button"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:minEms="7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/dialog_quantity_cancel"
-            android:id="@+id/qtty_cancel" />
+            android:gravity="center"
+            android:minEms="7"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/dialog_quantity_cancel" />
 
         <TextView
+            android:id="@+id/qtty_accept"
             style="@style/button"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:minEms="7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/dialog_quantity_accept"
-            android:id="@+id/qtty_accept" />
+            android:gravity="center"
+            android:minEms="7"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/dialog_quantity_accept" />
     </LinearLayout>
 
 </LinearLayout>
