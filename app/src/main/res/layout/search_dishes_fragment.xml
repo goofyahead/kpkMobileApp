@@ -23,16 +23,18 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/search_edit_text"
             style="@style/searchEditTextStyle"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@+id/search_icon"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
     <ListView
+        android:id="@+id/dish_search_list"
         android:layout_below="@id/search_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

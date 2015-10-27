@@ -25,6 +25,7 @@ import com.nxtlink.kaprika.base.KaprikaApplication;
 import com.nxtlink.kaprika.dialogs.ProgressDialogFragment;
 import com.nxtlink.kaprika.dialogs.SelectQuantityDialog;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
+import com.nxtlink.kaprika.fragments.DishSearchFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.fragments.HomeFragment;
 import com.nxtlink.kaprika.fragments.OrdersFragment;
@@ -168,16 +169,20 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         navigationOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
                 switch (position) {
                     case 0:
                         break;
                     case 1:
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
                         DishListViewFragment dlView = DishListViewFragment.newInstance("560018660d796bff06223c4c");
                         ft.replace(R.id.fragment_holder, dlView);
                         ft.commit();
                         break;
                     case 2:
+                        DishSearchFragment search = DishSearchFragment.newInstance();
+                        ft.replace(R.id.fragment_holder, search);
+                        ft.commit();
                         break;
                 }
                 mTitle = ((MenuDrawerCategory) navigationOptions.getAdapter().getItem(position)).getCategoryName();

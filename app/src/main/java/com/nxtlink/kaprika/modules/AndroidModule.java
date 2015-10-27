@@ -16,6 +16,7 @@ import com.nxtlink.kaprika.activities.RegisterActivity;
 import com.nxtlink.kaprika.adapters.DishCursorAdapter;
 import com.nxtlink.kaprika.fragments.AddressFragment;
 import com.nxtlink.kaprika.fragments.DishListViewFragment;
+import com.nxtlink.kaprika.fragments.DishSearchFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.fragments.FbLoginFragment;
 import com.nxtlink.kaprika.fragments.HomeFragment;
@@ -45,7 +46,8 @@ import retrofit.RestAdapter;
         HomeFragment.class,
         DishCursorAdapter.class,
         OrdersFragment.class,
-        OrderListFragment.class
+        OrderListFragment.class,
+        DishSearchFragment.class
 },
         library = true)
 public class AndroidModule {
