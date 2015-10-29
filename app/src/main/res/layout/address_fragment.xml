@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bt_white"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -38,37 +39,61 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_number_floor" />
 
-        <TextView
-            android:id="@+id/contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/phone_number" />
 
-        <EditText
-            android:id="@+id/phone"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:weightSum="2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_phone_number"
-            android:inputType="phone"
-            android:maxEms="5"
-            android:minEms="5" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/postal_code" />
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/address_postal_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_postal_code"
-            android:inputType="number"
-            android:maxEms="5"
-            android:minEms="5" />
+                <TextView
+                    android:id="@+id/contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/phone_number" />
+
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_phone_number"
+                    android:inputType="phone"
+                    android:maxEms="5"
+                    android:minEms="5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/postal_code" />
+
+                <EditText
+                    android:id="@+id/address_postal_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_postal_code"
+                    android:inputType="number"
+                    android:maxEms="5"
+                    android:minEms="5" />
+
+
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView7"
@@ -78,6 +103,7 @@
             android:text="@string/special_indications" />
 
         <EditText
+            android:singleLine="true"
             android:id="@+id/adress_extra_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,12 +114,13 @@
 
     <Button
         android:id="@+id/finish_register"
+        style="@style/button"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/custom_btn_outline_orange"
+        android:background="@android:color/transparent"
         android:text="@string/finish_registration" />
 
 </RelativeLayout>

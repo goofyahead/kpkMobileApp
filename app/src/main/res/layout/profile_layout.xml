@@ -12,30 +12,37 @@
         android:padding="24dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/profile_action_linearlayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/drawer_user_profile_pic"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:src="@drawable/icon_profile_small" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
+                android:paddingLeft="25dp"
+                android:paddingRight="85dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:singleLine="true"
+                    android:ems="16"
+                    android:maxEms="16"
+                    style="@style/body_emphasized"
                     android:id="@+id/drawer_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/view_profile" />
+                    android:text="@string/register_now" />
 
                 <TextView
+                    style="@style/small"
                     android:id="@+id/drawer_user_action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,11 +52,10 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="6dp"
             android:src="@drawable/icon_settings" />
     </RelativeLayout>
 

@@ -55,6 +55,7 @@ public class CarrouselAdapter extends PagerAdapter {
         ((TextView) holder.findViewById(R.id.highlight_dish_name)).setText(currenDish.getName());
         ((TextView) holder.findViewById(R.id.highlight_dish_description)).setText(currenDish.getDescription());
         ((TextView) holder.findViewById(R.id.highlight_dish_price)).setText(String.format(mContext.getString(R.string.price_euro), currenDish.getPrice()));
+
         final int currentPos = position;
 
 //        holder.setOnClickListener(new OnClickListener() {

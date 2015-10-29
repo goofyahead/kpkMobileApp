@@ -41,7 +41,7 @@
     <string name="postal_code_error">Debes introducir un codigo postal correcto</string>
     <string name="loading_dishes">cargando el menu</string>
     <string name="hint_phone_number">666554433</string>
-    <string name="phone_number">Numero de contacto:</string>
+    <string name="phone_number">Telefono:</string>
     <string name="error_phone">Debes introducir un telefono valido</string>
     <string name="title_activity_home">HomeActivity</string>
 
@@ -70,6 +70,11 @@
     <string name="orders_fav">FAVORITOS</string>
     <string name="add_to_fav">AÑADIR A FAVORITOS</string>
     <string name="order_line">%1$d x %2$s</string>
-    <string name="here_will_be_last_orders">Aqui aparece tu ultimo pedido</string>
+    <string name="here_will_be_last_orders">Aqui aparecera tu ultimo pedido</string>
+    <string name="register_to_get_products">Registrate y tendras tus platos favoritos al alcance de un click</string>
+    <string name="register_now">Registrate</string>
+    <string name="log_in">Iniciar sesion</string>
+    <string name="registration">Registro</string>
+    <string name="order_title">Pedido</string>
 
 </resources>

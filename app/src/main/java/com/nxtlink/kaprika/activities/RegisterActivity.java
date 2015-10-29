@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -56,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements ScrollToNext 
     private String TAG = RegisterActivity.class.getName();
     private CallbackManager callbackManager;
     private int current = 0;
+    private AccessTokenTracker accessTokenTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,20 @@ public class RegisterActivity extends AppCompatActivity implements ScrollToNext 
 
         pager.setAdapter(new RegistrationFragmentPagerAdapter(this.getSupportFragmentManager(), registrationFragments));
 
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                       AccessToken currentAccessToken) {
+                if (currentAccessToken == null) {
+                    //write your code here what to do when user logout
+                    Log.d(TAG, "user Logged out");
+                    prefs.setRegistered(false);
+                    prefs.setUserFbId("");
+                    prefs.setFbToken("");
+                }
+            }
+        };
+
         login.setReadPermissions("email");
 
         login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -102,6 +118,8 @@ public class RegisterActivity extends AppCompatActivity implements ScrollToNext 
                 prefs.setRegistered(true);
                 prefs.setFbToken(loginResult.getAccessToken().getToken());
                 prefs.setUserFbId(loginResult.getAccessToken().getUserId());
+
+                accessTokenTracker.startTracking();
 
                 GraphRequest request = new GraphRequest(
                         AccessToken.getCurrentAccessToken(),

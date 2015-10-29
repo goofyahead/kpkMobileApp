@@ -28,7 +28,7 @@
         android:layout_marginRight="7dp"
         android:layout_marginTop="5dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="5dp"></ListView>
+        android:dividerHeight="5dp"/>
 
     <!--<ListView-->
     <!--android:layout_width="wrap_content"-->

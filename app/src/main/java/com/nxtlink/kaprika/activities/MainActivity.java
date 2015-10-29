@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,7 +34,9 @@ import com.nxtlink.kaprika.fragments.OrdersFragment;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.interfaces.LoadCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
+import com.nxtlink.kaprika.picassoTransformers.CircleTransform;
 import com.nxtlink.kaprika.sharedprefs.KaprikaSharedPrefs;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     RelativeLayout drawerHolder;
     @InjectView(R.id.profile_options_listview)
     ListView profileListOptions;
+    @InjectView(R.id.drawer_user_name)
+    TextView userName;
+    @InjectView(R.id.drawer_user_action)
+    TextView userAction;
+    @InjectView(R.id.drawer_user_profile_pic)
+    ImageView userPic;
+    @InjectView(R.id.profile_action_linearlayout)
+    LinearLayout profileAction;
 
 
     private CharSequence mTitle;
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     private TextView orderCount;
     private View cartView;
     private Dish currentDishSelected;
-    private Cart currentCart ;
+    private Cart currentCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
 
+        currentCart = new Cart("", prefs.getUserFbId());
+
         // Create productOptions for profile
         profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_home), 0, getResources().getDrawable(R.drawable.icon_home)));
         profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_my_orders), 0, getResources().getDrawable(R.drawable.icon_receipt)));
@@ -100,19 +114,26 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_products_list), 0, getResources().getDrawable(R.drawable.icon_products)));
         productOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_product_search), 0, getResources().getDrawable(R.drawable.icon_search)));
 
-//        profilePic.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (prefs.isRegistered()) {
-//                    // show my profile
-//                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
-//                    startActivity(registration);
-//                } else {
-//                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
-//                    startActivity(registration);
-//                }
-//            }
-//        });
+
+        profileAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (prefs.isRegistered()) {
+                    // show my profile
+                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
+                    startActivity(registration);
+
+                    drawerLayout.closeDrawer(drawerHolder);
+                    getSupportActionBar().setTitle(mTitle);
+                } else {
+                    Intent registration = new Intent(MainActivity.this, RegisterActivity.class);
+                    startActivity(registration);
+
+                    drawerLayout.closeDrawer(drawerHolder);
+                    getSupportActionBar().setTitle(mTitle);
+                }
+            }
+        });
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -173,6 +194,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
 
                 switch (position) {
                     case 0:
+                        HomeFragment home = HomeFragment.newInstance();
+                        ft.replace(R.id.fragment_holder, home);
+                        ft.commit();
                         break;
                     case 1:
                         DishListViewFragment dlView = DishListViewFragment.newInstance("560018660d796bff06223c4c");
@@ -329,7 +353,13 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         super.onResume();
 
         api.getLastUpdate(this);
-        currentCart = new Cart("", prefs.getUserFbId());
+
+        if (prefs.isRegistered()){
+            Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(userPic);
+            userName.setText(prefs.getUserName());
+        } else {
+            userName.setText(getString(R.string.register_now));
+        }
 
         MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this, productOptions);
         navigationOptions.setAdapter(menuAdapter);
@@ -342,16 +372,9 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         // Load home fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         HomeFragment home = HomeFragment.newInstance();
-        ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out);
         ft.replace(R.id.fragment_holder, home);
         ft.commit();
 
-
-//        if(prefs.isRegistered()) {
-//            Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(profilePic);
-//        } else {
-//            Picasso.with(this).load(R.drawable.icon_profile_small).transform(new CircleTransform()).into(profilePic);
-//        }
     }
 
     @Override
