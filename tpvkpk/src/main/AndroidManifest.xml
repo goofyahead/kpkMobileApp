@@ -32,6 +32,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".printer.DeviceListActivity"/>
+        <activity android:name=".activities.OrderActivity"/>
+        <activity android:name=".activities.CheckoutActivity"/>
+        <activity android:name=".activities.RegisterActivity"/>
+
     </application>
 
 </manifest>

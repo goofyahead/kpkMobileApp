@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.nxtlink.kaprika.R;
 import com.nxtlink.kaprika.adapters.MenuAdapter;
 import com.nxtlink.kaprika.base.KaprikaApplication;
@@ -31,6 +33,7 @@ import com.nxtlink.kaprika.fragments.DishSearchFragment;
 import com.nxtlink.kaprika.fragments.DishViewFragment;
 import com.nxtlink.kaprika.fragments.HomeFragment;
 import com.nxtlink.kaprika.fragments.OrdersFragment;
+import com.nxtlink.kaprika.gcm.RegistrationIntentService;
 import com.nxtlink.kaprika.interfaces.AddToCart;
 import com.nxtlink.kaprika.interfaces.LoadCart;
 import com.nxtlink.kaprika.interfaces.SelectQuantityInterface;
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     LinearLayout profileAction;
 
 
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<MenuDrawerCategory> productOptions = new ArrayList<>();
@@ -105,6 +109,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
         ((KaprikaApplication) getApplication()).inject(this);
 
         currentCart = new Cart("", prefs.getUserFbId());
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Log.d(TAG, "gservices working starting service");
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        } else {
+            Log.d(TAG, "not working gservices");
+        }
 
         // Create productOptions for profile
         profileOptions.add(new MenuDrawerCategory(getResources().getString(R.string.nav_home), 0, getResources().getDrawable(R.drawable.icon_home)));
@@ -187,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                 getSupportActionBar().setTitle(mTitle);
             }
         });
+
         navigationOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -308,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
                 @Override
                 public void success(List<Dish> dishes, Response response) {
                     Log.d(TAG, "saving dishes in db " + dishes.size());
-                    progress.setMax(dishes.size() * 2);
+                    progress.setMax(dishes.size());
 
                     for (Dish dish : dishes) {
                         Log.d(TAG, "SAVING: " + dish.getName());
@@ -352,12 +366,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     protected void onResume() {
         super.onResume();
 
+        currentCart.setFbId(prefs.getUserFbId());
+
         api.getLastUpdate(this);
 
         if (prefs.isRegistered()){
             Picasso.with(this).load("https://graph.facebook.com/" + prefs.getUserFbId()+ "/picture?type=large").transform(new CircleTransform()).into(userPic);
             userName.setText(prefs.getUserName());
         } else {
+            userPic.setImageDrawable(getResources().getDrawable(R.drawable.icon_profile));
             userName.setText(getString(R.string.register_now));
         }
 
@@ -441,6 +458,22 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
     public void loadCart(Cart cart) {
         currentCart = cart;
         updateCartCounter();
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
 }

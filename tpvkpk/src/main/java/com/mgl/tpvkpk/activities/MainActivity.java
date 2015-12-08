@@ -1,8 +1,10 @@
 package com.mgl.tpvkpk.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.printservice.PrintService;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -15,43 +17,51 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.mgl.tpvkpk.R;
 import com.mgl.tpvkpk.base.TpvKpkApplication;
+import com.mgl.tpvkpk.dialog.ProgressDialogFragment;
+import com.mgl.tpvkpk.services.PrinterService;
 import com.zj.btsdk.PrintPic;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import kpklib.api.ApiHelper;
 import kpklib.api.KaprikaApiInterface;
 import kpklib.interfaces.DbUpdater;
+import kpklib.models.UserInfo;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DbUpdater {
 
     private static final String TAG = MainActivity.class.getName();
-
-    @Inject
-    KaprikaApiInterface api;
+    private ProgressDialogFragment updateDialog;
+    @InjectView(R.id.start_order)
+    Button startOrder;
+    @InjectView(R.id.phone_number)
+    EditText phoneNumber;
+    @Inject KaprikaApiInterface api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = new Intent(this, PrinterService.class);
+        startService(intent);
+
         ((TpvKpkApplication) getApplication()).inject(this);
+        ButterKnife.inject(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,27 +72,50 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ApiHelper helper = new ApiHelper(this, MainActivity.this);
-        helper.updateIfNecesary();
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        ApiHelper helper = new ApiHelper(this, MainActivity.this);
+        helper.updateIfNecesary();
 
-        PrintPic pic = new PrintPic();
+        phoneNumber.setText("");
 
-        // Get a set of currently paired devices
+        updateDialog = new ProgressDialogFragment();
+        updateDialog.show(getFragmentManager(), "me");
 
-        // if No printers are connected or need to connect more
-//        Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);      //��������һ����Ļ
-//        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+        startOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (phoneNumber.getText().length() < 9 || !( phoneNumber.getText().toString().startsWith("6") || phoneNumber.getText().toString().startsWith("9"))) {
+                    phoneNumber.setError(getString(R.string.phone_must_be_correct));
+                } else {
+                    api.getClientByPhone(phoneNumber.getText().toString(), new Callback<UserInfo>() {
+                        @Override
+                        public void success(UserInfo userInfo, Response response) {
+                            if (userInfo == null) {
+                                Log.d(TAG, "user not exist, create it");
+                                Intent registerUser = new Intent(MainActivity.this, RegisterActivity.class);
+                                startActivity(registerUser);
+                            } else {
+                                Log.d(TAG, "user is: " + userInfo.getName());
+                                Intent selectItems = new Intent(MainActivity.this, OrderActivity.class);
+                                selectItems.putExtra(OrderActivity.USER_PAYLOAD, userInfo);
+                                startActivity(selectItems);
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.d(TAG, "error retrieving user: " + error.getMessage());
+                        }
+                    });
+                }
+            }
+        });
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -149,11 +182,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void finished() {
+        updateDialog.dismiss();
         Log.d(TAG, "Finished");
     }
 
     @Override
     public void setMax(int max) {
+        updateDialog.setMax(max);
         Log.d(TAG, "Max is: " + max);
     }
 
@@ -164,30 +199,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateTo(int i) {
+        updateDialog.updateProgress(i);
         Log.d(TAG, "status " + i);
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_ENABLE_BT:      //���������
-//                if (resultCode == Activity.RESULT_OK) {   //�����Ѿ���
-//                    Toast.makeText(this, "Bluetooth open successful", Toast.LENGTH_LONG).show();
-//                } else {                 //�û������������
-//                    finish();
-//                }
-//                break;
-//            case  REQUEST_CONNECT_DEVICE:     //��������ĳһ�����豸
-//                if (resultCode == Activity.RESULT_OK) {   //�ѵ�������б��е�ĳ���豸��
-//                    String address = data.getExtras()
-//                            .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);  //��ȡ�б������豸��mac��ַ
-//                    con_dev = mService.getDevByMac(address);
-//
-//                    mService.connect(con_dev);
-//                }
-//                break;
-//        }
-//    }
-
 
 }

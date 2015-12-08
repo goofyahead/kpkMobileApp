@@ -120,20 +120,24 @@ public class HomeFragment extends Fragment {
                                 lastOrderFirstLine.setText(String.format(getResources().getString(R.string.order_line), mLastCartOrder.getItem(0).getQuantity(), mLastCartOrder.getItem(0).getItem().getName()));
                             }
                         } else {
-                            lastOrderFirstLine.setText(getActivity().getString(R.string.here_will_be_last_orders));
+                            if (isAdded()) {
+                                lastOrderFirstLine.setText(getActivity().getString(R.string.here_will_be_last_orders));
 
-                            repeatLastOrder.setVisibility(View.GONE);
-                            separatorLastView.setVisibility(View.GONE);
+                                repeatLastOrder.setVisibility(View.GONE);
+                                separatorLastView.setVisibility(View.GONE);
+                            }
                         }
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.d(TAG, "error retrieving last orders" + error);
-                        lastOrderFirstLine.setText(getActivity().getString(R.string.here_will_be_last_orders));
+                        if (isAdded()) {
+                            Log.d(TAG, "error retrieving last orders" + error);
+                            lastOrderFirstLine.setText(getActivity().getString(R.string.here_will_be_last_orders));
 
-                        repeatLastOrder.setVisibility(View.GONE);
-                        separatorLastView.setVisibility(View.GONE);
+                            repeatLastOrder.setVisibility(View.GONE);
+                            separatorLastView.setVisibility(View.GONE);
+                        }
                     }
                 };
 

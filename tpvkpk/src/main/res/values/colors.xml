@@ -3,4 +3,29 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="secondary">#f4f4f4</color>
+    <color name="primary">#323232</color>
+    <color name="neutral">#d8d8d8</color>
+    <color name="light_darker">#fafafa</color>
+    <color name="success">#7ed321</color>
+    <color name="error">#e56141</color>
+    <color name="warning_light">#f8e71c</color>
+    <color name="success_dark">#417505</color>
+    <color name="error_dark">#94090d</color>
+    <color name="success_light">#b8e986</color>
+    <color name="error_light">#efad9d</color>
+    <color name="light">#ffffff</color>
+    <color name="shadow">#99494949</color>
+    <color name="neutral_darker">#ececec</color>
+    <color name="dark">#727272</color>
+    <color name="dark_darker">#4a4a4a</color>
+    <color name="dark_lighter">#9b9b9b</color>
+    <color name="warning">#f4b34c</color>
+    <color name="navbar">#000000</color>
+    <color name="status_bar_icon_translucent">#4dffffff</color>
+    <color name="status_bar_icon">#e6ffffff</color>
+    <color name="tertiary">#99232323</color>
+
+    <!-- circle pager indicator -->
+    <color name="circle_empty">#FFA3A3A3</color>
 </resources>

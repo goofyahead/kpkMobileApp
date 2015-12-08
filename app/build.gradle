@@ -1,13 +1,21 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'kaprika'
+            keyPassword 'ALE1984jandro'
+            storeFile file('/Users/goofyahead/kaprika.jks')
+            storePassword 'ALE1984jandro'
+        }
+    }
     compileSdkVersion 23
-    buildToolsVersion "22.0.1"
-
+    buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "com.nxtlink.kaprika"
         minSdkVersion 18
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -17,7 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -28,8 +35,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     compile project(':kpklib')
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
+    compile 'com.google.android.gms:play-services-gcm:8.1.0'
     compile 'com.squareup.dagger:dagger:1.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.jakewharton:butterknife:5.1.2'
@@ -39,5 +45,6 @@ dependencies {
     compile 'joda-time:joda-time:2.3'
     compile 'com.braintreepayments.api:braintree:1.+'
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
-    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
 }

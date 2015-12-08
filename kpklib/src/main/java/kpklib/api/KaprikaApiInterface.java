@@ -8,6 +8,7 @@ import kpklib.models.AccessToken;
 import kpklib.models.Cart;
 import kpklib.models.Category;
 import kpklib.models.Dish;
+import kpklib.models.OrderFromKpk;
 import kpklib.models.PrintableOrder;
 import kpklib.models.UserInfo;
 import retrofit.Callback;
@@ -51,4 +52,10 @@ public interface KaprikaApiInterface {
 
     @POST("/api/clients")
     void postUserInfo(@Body UserInfo userInfo, Callback<String> response);
+
+    @GET("/api/clients/phone/{phone}")
+    void getClientByPhone(@Path("phone") String phone, Callback<UserInfo> user);
+
+    @POST("/api/orderFromKaprika")
+    void postOrderFromKpk(@Body OrderFromKpk order, Callback<String> response);
 }

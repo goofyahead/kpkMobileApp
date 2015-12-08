@@ -18,6 +18,8 @@ public class KaprikaSharedPrefs {
     private static final String USER_FB_ID = "USER_FB_ID";
     private static final String USER_NAME = "USER_NAME";
     private static final String USER_EMAIL = "USER_EMAIL";
+    private static final String GCM_REGISTERED = "GOOGLE_GCM_REGISTERED";
+    private static final String GCM_TOKEN = "GCM_TOKEN";
     private final SharedPreferences prefs;
 
     public KaprikaSharedPrefs(Context context) {
@@ -29,14 +31,14 @@ public class KaprikaSharedPrefs {
     }
 
     public void setLastUpdated(int timeStamp) {
-        prefs.edit().putInt(LAST_UPDATED, timeStamp).commit();
+        prefs.edit().putInt(LAST_UPDATED, timeStamp).apply();
     }
     public boolean isFirstTime() {
         return prefs.getBoolean(IS_FIRST_TIME, true);
     }
 
     public void setFirstTime(boolean first) {
-        prefs.edit().putBoolean(IS_FIRST_TIME, first).commit();
+        prefs.edit().putBoolean(IS_FIRST_TIME, first).apply();
     }
 
     public boolean isRegistered() {
@@ -44,7 +46,7 @@ public class KaprikaSharedPrefs {
     }
 
     public void setRegistered(boolean status) {
-        prefs.edit().putBoolean(IS_REGISTERED, status).commit();
+        prefs.edit().putBoolean(IS_REGISTERED, status).apply();
     }
 
     public String getFbToken() {
@@ -52,15 +54,7 @@ public class KaprikaSharedPrefs {
     }
 
     public void setFbToken(String secret) {
-        prefs.edit().putString(SECRET, secret).commit();
-    }
-
-    public void setRegistrationPushId(String regid) {
-        prefs.edit().putString(REGISTRATION_ID, regid).commit();
-    }
-
-    public String getRegistrationPushId() {
-        return prefs.getString(REGISTRATION_ID, "");
+        prefs.edit().putString(SECRET, secret).apply();
     }
 
     public int getRegisteredVersion() {
@@ -68,11 +62,11 @@ public class KaprikaSharedPrefs {
     }
 
     public void setRegisteredVersion(int version) {
-        prefs.edit().putInt(REGISTERED_VERSION, version).commit();
+        prefs.edit().putInt(REGISTERED_VERSION, version).apply();
     }
 
     public void setUserFbId(String userFbId) {
-        prefs.edit().putString(USER_FB_ID, userFbId).commit();
+        prefs.edit().putString(USER_FB_ID, userFbId).apply();
     }
 
     public String getUserFbId() {
@@ -80,11 +74,11 @@ public class KaprikaSharedPrefs {
     }
 
     public void setUserName(String userName) {
-        prefs.edit().putString(USER_NAME, userName).commit();
+        prefs.edit().putString(USER_NAME, userName).apply();
     }
 
     public void setUserEmail(String email) {
-        prefs.edit().putString(USER_EMAIL, email).commit();
+        prefs.edit().putString(USER_EMAIL, email).apply();
     }
 
     public String getUserName() {
@@ -95,4 +89,15 @@ public class KaprikaSharedPrefs {
         return prefs.getString(USER_EMAIL, "");
     }
 
+    public void setGCMregistered(boolean GCMregistered) {
+        prefs.edit().putBoolean(GCM_REGISTERED, GCMregistered).apply();
+    }
+
+    public void setGCMtoken(String GCMtoken) {
+        prefs.edit().putString(GCM_TOKEN, GCMtoken).apply();
+    }
+
+    public String getGCMtoken() {
+        return prefs.getString(GCM_TOKEN, "");
+    }
 }

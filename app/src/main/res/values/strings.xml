@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kaprika</string>
+    <string name="app_name">Kpk Go</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -76,5 +76,6 @@
     <string name="log_in">Iniciar sesion</string>
     <string name="registration">Registro</string>
     <string name="order_title">Pedido</string>
+    <string name="order_updated">Pedido actualizado</string>
 
 </resources>

@@ -79,7 +79,7 @@ public class ApiHelper {
                         @Override
                         public void success(List<Dish> dishes, Response response) {
                             Log.d(TAG, "saving dishes in db " + dishes.size());
-                            max = dishes.size() * 2;
+                            max = dishes.size();
                             cb.setMax(max);
 
                             for (Dish dish : dishes) {

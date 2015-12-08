@@ -208,7 +208,7 @@ public class PrintDemo extends Activity {
     	sendData = pg.printDraw();
     	mService.write(sendData);   //��ӡbyte�����
 
-		Bitmap patito = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.patito);
+		Bitmap patito = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.icon_delivering);
 		Bitmap resized = Bitmap.createScaledBitmap(patito, 32, 32, false);
 
 		byte [] result = new byte[resized.getHeight() + 8];

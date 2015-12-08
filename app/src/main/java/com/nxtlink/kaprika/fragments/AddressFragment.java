@@ -77,7 +77,7 @@ public class AddressFragment extends Fragment {
                     UserInfo user = new UserInfo(prefs.getUserName(), prefs.getUserFbId(),
                             prefs.getUserEmail(), addressStreet.getText().toString(),
                             addressFloor.getText().toString(), extraInfo.getText().toString(),
-                            postalCode.getText().toString(), phone.getText().toString());
+                            postalCode.getText().toString(), phone.getText().toString(), prefs.getGCMtoken());
 
                     api.postUserInfo(user, new Callback<String>() {
                         @Override

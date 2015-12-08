@@ -94,11 +94,11 @@ public class DataHelper {
         requestPicture.allowScanningByMediaScanner();
         dm.enqueue(requestPicture);
 
-        DownloadManager.Request requestVideo = new DownloadManager.Request(Uri.parse(Credentials.SERVER_IP + Credentials.VIDEOS_PATH + dish.getVideo()));
-        requestVideo.setVisibleInDownloadsUi(false);
-        requestVideo.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, Credentials.FOLDER_KPK_VIDEOS + dish.getVideo());
-        requestVideo.allowScanningByMediaScanner();
-        dm.enqueue(requestVideo);
+//        DownloadManager.Request requestVideo = new DownloadManager.Request(Uri.parse(Credentials.SERVER_IP + Credentials.VIDEOS_PATH + dish.getVideo()));
+//        requestVideo.setVisibleInDownloadsUi(false);
+//        requestVideo.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, Credentials.FOLDER_KPK_VIDEOS + dish.getVideo());
+//        requestVideo.allowScanningByMediaScanner();
+//        dm.enqueue(requestVideo);
 
 		// save options for dish
 		for (String options : dish.getOptions().keySet()){

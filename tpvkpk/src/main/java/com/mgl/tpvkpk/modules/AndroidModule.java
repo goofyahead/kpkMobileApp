@@ -7,7 +7,13 @@ package com.mgl.tpvkpk.modules;
 import android.app.DownloadManager;
 import android.content.Context;
 
+import com.mgl.tpvkpk.activities.CheckoutActivity;
 import com.mgl.tpvkpk.activities.MainActivity;
+import com.mgl.tpvkpk.activities.OrderActivity;
+import com.mgl.tpvkpk.activities.RegisterActivity;
+import com.mgl.tpvkpk.adapters.DishCursorAdapter;
+import com.mgl.tpvkpk.dialog.SelectQuantityDialog;
+import com.mgl.tpvkpk.fragments.DishListViewFragment;
 import com.mgl.tpvkpk.services.PrinterService;
 
 import javax.inject.Singleton;
@@ -25,7 +31,13 @@ import retrofit.RestAdapter;
         MainActivity.class,
         DataHelper.class,
         ApiHelper.class,
-        PrinterService.class
+        PrinterService.class,
+        RegisterActivity.class,
+        CheckoutActivity.class,
+        OrderActivity.class,
+        DishCursorAdapter.class,
+        DishListViewFragment.class,
+        SelectQuantityDialog.class
 },
         library = true)
 public class AndroidModule {
@@ -45,18 +57,6 @@ public class AndroidModule {
         return mContext;
     }
 
-//    @Provides
-//    @Singleton
-//    RequestQueue provideQueue() {
-//        return Volley.newRequestQueue(mContext);
-//    }
-//
-//    @Provides
-//    @Singleton
-//    ImageLoader provideImageLoader(RequestQueue mRequestQueue) {
-//        return new ImageLoader(mRequestQueue, new BitmapLruCache(50));
-//    }
-//
     @Provides
     @Singleton
     KpkLibPrefs provideSharedPrefs() {

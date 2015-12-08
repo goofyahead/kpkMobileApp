@@ -54,7 +54,7 @@ public class PrinterService extends Service {
                     public void success(PrintableOrder printableOrder, Response response) {
                         if (printableOrder != null) {
 
-                            Bitmap patito = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.patito);
+                            Bitmap patito = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.icon_delivering);
                             Bitmap resized = Bitmap.createScaledBitmap(patito, 80, 80, false);
 
                             PrintPic pg = new PrintPic();
@@ -68,7 +68,7 @@ public class PrinterService extends Service {
                             textPaint.setColor(Color.BLACK);
                             textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
                             textPaint.setTextSize(40);
-                            pg.canvas.drawText("hola          ....", 0, 120, textPaint);
+                            pg.canvas.drawText("hola   ....", 0, 120, textPaint);
 
                             pg.length = 160;
 
@@ -90,6 +90,9 @@ public class PrinterService extends Service {
 
                                 for (CartItem item : printableOrder.getItemList().values()) {
                                     mService.sendMessage(item.getItem().getName() + item.getItem().getPrice() + " x " + item.getQuantity(), "GBK");
+                                    for (String option : item.getOptions().keySet()){
+                                        mService.sendMessage(option + " : " + item.getOptions().get(option), "GBK");
+                                    }
                                 }
 
                                 mService.sendMessage("--------------------------------", "GBK");
@@ -161,6 +164,7 @@ public class PrinterService extends Service {
         for(BluetoothDevice device : pairedDevices){
             Log.d(TAG, "already paired to: " + device.getName() + " : " + device.getAddress() + " Bonded: " + device.getBondState());
             mService.connect(device);
+
             Log.d(TAG, "connecting to it");
 //            mService.sendMessage("Hello world!", "GBK");
         }
