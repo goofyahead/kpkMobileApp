@@ -2,5 +2,6 @@
     "name": "Kpk Mobile App",
     "tags": ["android", "e-comerce"],
     "picture": "portfolio.png",
-    "description": "Mobile app to order food online"
+    "description": "Mobile app to order food online",
+    "url": "https://github.com/goofyahead/kpkMobileApp"
 }
