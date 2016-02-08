@@ -17,13 +17,14 @@ public class Dish implements Serializable{
 	private String picture;
 	private String video;
 	private boolean demo;
+    private boolean kitchen;
 	private LinkedList<Category> categories;
 	private LinkedList<Ingredient> ingredients;
 	private LinkedList<Tag> tags;
     private LinkedList<Recommendation> recommendations;
     private LinkedHashMap<String, LinkedList<String>> options;
 
-    public Dish(String id, String name, String description, float price, String picture, String video, boolean demo, LinkedList<Category> categories, LinkedList<Ingredient> ingredients, LinkedList<Tag> tags, LinkedList<Recommendation> recommendations) {
+    public Dish(String id, String name, String description, float price, String picture, String video, boolean demo, LinkedList<Category> categories, LinkedList<Ingredient> ingredients, LinkedList<Tag> tags, LinkedList<Recommendation> recommendations, boolean isKitchen) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,6 +36,7 @@ public class Dish implements Serializable{
         this.ingredients = ingredients;
         this.tags = tags;
         this.recommendations = recommendations;
+        this.kitchen = isKitchen;
     }
 
     public Dish(String id, String name, String description, float price, String picture, String video, boolean demo) {
@@ -45,6 +47,14 @@ public class Dish implements Serializable{
         this.picture = picture;
         this.video = video;
         this.demo = demo;
+    }
+
+    public boolean isKitchen() {
+        return kitchen;
+    }
+
+    public void setKitchen(boolean kitchen) {
+        this.kitchen = kitchen;
     }
 
     public LinkedHashMap<String, LinkedList<String>> getOptions() {

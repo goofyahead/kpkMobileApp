@@ -84,6 +84,7 @@ public class DataHelper {
 		values.put(DbHelper.DISH_VIDEO, dish.getVideo());
 		values.put(DbHelper.DISH_PRICE, dish.getPrice());
 		values.put(DbHelper.DISH_DEMO, dish.isDemo());
+		values.put(DbHelper.DISH_KITCHEN, dish.isKitchen());
 		db.insert(DbHelper.TABLE_NAME_DISHES, null, values);
 
 		db.close();
@@ -289,7 +290,8 @@ public class DataHelper {
 			 String id = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_ID));
 			 String image = cursor.getString(cursor.getColumnIndex(DbHelper.DISH_IMAGE));
 			 boolean demo = cursor.getInt(cursor.getColumnIndex(DbHelper.DISH_DEMO)) == 0 ? false : true;
-			 searchedDish = new Dish(id, name, description, price, image, video, demo, null, null, null, null);
+			 boolean kitchen = cursor.getInt(cursor.getColumnIndex(DbHelper.DISH_KITCHEN)) == 0 ? false : true;
+			 searchedDish = new Dish(id, name, description, price, image, video, demo, null, null, null, null, kitchen);
 		 }
 		cursor.close();
         db.close();

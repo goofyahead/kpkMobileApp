@@ -35,6 +35,7 @@ public class ProgressDialogFragment extends DialogFragment{
 
         ButterKnife.inject(this, v);
         builder.setView(v);
+        setCancelable(false);
         return builder.create();
     }
 

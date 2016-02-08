@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.mgl.tpvkpk"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -30,4 +30,6 @@ dependencies {
     compile project(':kpklib')
     compile 'com.jakewharton:butterknife:5.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:support-v4:23.1.0'
+    compile 'joda-time:joda-time:2.3'
 }

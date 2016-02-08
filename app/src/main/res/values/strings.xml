@@ -77,5 +77,8 @@
     <string name="registration">Registro</string>
     <string name="order_title">Pedido</string>
     <string name="order_updated">Pedido actualizado</string>
+    <string name="title_activity_closed">closedActivity</string>
+    <string name="we_are_closed">Lo sentimos! \n\nEn estos momentos estamos cerrados y no aceptamos pedidos.</string>
+    <string name="schedule">Nuestro horario es: \nDe %1$s a %2$s y de %3$s a %4$s </string>
 
 </resources>

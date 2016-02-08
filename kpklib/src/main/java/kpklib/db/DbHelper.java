@@ -19,6 +19,7 @@ public class DbHelper extends SQLiteOpenHelper{
 	public static final String DISH_IMAGE = "DISH_IMAGE";
 	public static final String DISH_VIDEO = "DISH_VIDEO";
 	public static final String DISH_DEMO = "DISH_DEMO";
+	public static final String DISH_KITCHEN = "DISH_KITCHEN";
 	public static final String DISH_PRICE = "DISH_PRICE";
 	
 	public static final String TABLE_NAME_RELATIONS = "RELATIONS_TABLE";
@@ -57,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper{
 	public static final String TAG_NAME = "TAG_NAME";
 	public static final String TAG_DESCRIPTION = "TAG_DESCRIPTION";
 
-    public static final String CREATE_OPTIONS_REL = "CREATE TABLE "
+	public static final String CREATE_OPTIONS_REL = "CREATE TABLE "
             + TABLE_OPTIONS_NAME + " ("
             + OPTION_DISH_ID + " TEXT, "
             + OPTION_NAME + " TEXT )";
@@ -70,6 +71,7 @@ public class DbHelper extends SQLiteOpenHelper{
             + DISH_IMAGE + " TEXT, "
             + DISH_VIDEO + " TEXT, "
             + DISH_DEMO + " INTEGER, "
+			+ DISH_KITCHEN + " INTEGER, "
             + DISH_PRICE + " FLOAT )";
 
 	

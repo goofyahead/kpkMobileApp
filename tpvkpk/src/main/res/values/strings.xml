@@ -98,4 +98,7 @@
     <string name="client_name">Nombre:</string>
     <string name="hint_name">Gustavo Garcia</string>
     <string name="client_email">Email:</string>
+    <string name="print_again">Imprimir ticket de nuevo:</string>
+    <string name="id_pedido">Id pedido: %s</string>
+    <string name="client_name_must_exist">Debes añadir el nombre del cliente</string>
 </resources>

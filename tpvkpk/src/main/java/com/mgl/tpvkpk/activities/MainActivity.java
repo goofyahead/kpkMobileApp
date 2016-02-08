@@ -1,13 +1,22 @@
 package com.mgl.tpvkpk.activities;
 
+import android.accounts.Account;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
 import android.printservice.PrintService;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,14 +26,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mgl.tpvkpk.R;
+import com.mgl.tpvkpk.adapters.PrintTicketsAdapter;
 import com.mgl.tpvkpk.base.TpvKpkApplication;
 import com.mgl.tpvkpk.dialog.ProgressDialogFragment;
 import com.mgl.tpvkpk.services.PrinterService;
 import com.zj.btsdk.PrintPic;
+
+import java.lang.reflect.Type;
+import java.util.LinkedList;
 
 import javax.inject.Inject;
 
@@ -32,7 +51,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import kpklib.api.ApiHelper;
 import kpklib.api.KaprikaApiInterface;
+import kpklib.base.KpkLibPrefs;
 import kpklib.interfaces.DbUpdater;
+import kpklib.models.CartItem;
+import kpklib.models.PrintableOrder;
 import kpklib.models.UserInfo;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -47,7 +69,14 @@ public class MainActivity extends AppCompatActivity
     Button startOrder;
     @InjectView(R.id.phone_number)
     EditText phoneNumber;
+    @InjectView(R.id.latest_orders_print)
+    ListView ordersPrint;
     @Inject KaprikaApiInterface api;
+    @Inject
+    KpkLibPrefs prefs;
+    private PrintTicketsAdapter printOrdersAdapter;
+    private Gson myGson = new Gson();
+    Type type = new TypeToken<LinkedList<PrintableOrder>>(){}.getType();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +103,70 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // handler for received Intents for the "my-event" event
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            PrintableOrder message = (PrintableOrder) intent.getSerializableExtra("message");
+
+            LinkedList<PrintableOrder> ordersThatCanBePrinted = myGson.fromJson(prefs.getOrdersToPrint(), type);
+            if(ordersThatCanBePrinted != null) {
+                ordersThatCanBePrinted.addFirst(message);
+            } else {
+                ordersThatCanBePrinted = new LinkedList<>();
+                ordersThatCanBePrinted.add(message);
+            }
+
+            String json = myGson.toJson(ordersThatCanBePrinted);
+            Log.d(TAG, "json " + json);
+            prefs.setOrdersToPrint(json);
+
+            LinkedList<PrintableOrder> ordersThatCanBePrintedAgain = myGson.fromJson(prefs.getOrdersToPrint(), type);
+            if(ordersThatCanBePrinted != null) {
+                if (ordersThatCanBePrinted.size() > 10) {
+                    ordersThatCanBePrinted.removeLast();
+                }
+                printOrdersAdapter = new PrintTicketsAdapter(ordersThatCanBePrintedAgain, MainActivity.this);
+                ordersPrint.setAdapter(printOrdersAdapter);
+            }
+            Log.d(TAG, "reloading list");
+
+        }
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
 
+        Log.d(TAG, "Activity resumed");
         ApiHelper helper = new ApiHelper(this, MainActivity.this);
         helper.updateIfNecesary();
+
+        LinkedList<PrintableOrder> ordersThatCanBePrinted = myGson.fromJson(prefs.getOrdersToPrint(), type);
+        if(ordersThatCanBePrinted != null) {
+            if (ordersThatCanBePrinted.size() > 10) {
+                ordersThatCanBePrinted.removeLast();
+            }
+            printOrdersAdapter = new PrintTicketsAdapter(ordersThatCanBePrinted, this);
+            ordersPrint.setAdapter(printOrdersAdapter);
+        }
+
+        ordersPrint.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PrintableOrder order = printOrdersAdapter.get(position);
+                Log.d(TAG, "should print ticket " + order.getNonce());
+                Intent intent = new Intent("re-print");
+                // add data
+                intent.putExtra("message", order);
+                LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(intent);
+            }
+        });
+
+        // Register mMessageReceiver to receive messages.
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("my-event"));
 
         phoneNumber.setText("");
 
@@ -89,7 +176,7 @@ public class MainActivity extends AppCompatActivity
         startOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (phoneNumber.getText().length() < 9 || !( phoneNumber.getText().toString().startsWith("6") || phoneNumber.getText().toString().startsWith("9"))) {
+                if (phoneNumber.getText().length() < 9 || !(phoneNumber.getText().toString().startsWith("6") || phoneNumber.getText().toString().startsWith("9"))) {
                     phoneNumber.setError(getString(R.string.phone_must_be_correct));
                 } else {
                     api.getClientByPhone(phoneNumber.getText().toString(), new Callback<UserInfo>() {
@@ -98,6 +185,7 @@ public class MainActivity extends AppCompatActivity
                             if (userInfo == null) {
                                 Log.d(TAG, "user not exist, create it");
                                 Intent registerUser = new Intent(MainActivity.this, RegisterActivity.class);
+                                registerUser.putExtra(RegisterActivity.PHONE, phoneNumber.getText().toString());
                                 startActivity(registerUser);
                             } else {
                                 Log.d(TAG, "user is: " + userInfo.getName());
@@ -201,6 +289,13 @@ public class MainActivity extends AppCompatActivity
     public void updateTo(int i) {
         updateDialog.updateProgress(i);
         Log.d(TAG, "status " + i);
+    }
+
+    @Override
+    protected void onPause() {
+        // Unregister since the activity is not visible
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onPause();
     }
 
 }

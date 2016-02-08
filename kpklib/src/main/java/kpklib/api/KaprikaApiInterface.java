@@ -8,6 +8,7 @@ import kpklib.models.AccessToken;
 import kpklib.models.Cart;
 import kpklib.models.Category;
 import kpklib.models.Dish;
+import kpklib.models.Open;
 import kpklib.models.OrderFromKpk;
 import kpklib.models.PrintableOrder;
 import kpklib.models.UserInfo;
@@ -37,6 +38,9 @@ public interface KaprikaApiInterface {
 
     @GET("/api/currentmenu")
     void getCurrentMenu(Callback<List<Dish>> dishes);
+
+    @GET("/api/isOpen")
+    void isRestaurantOpen(Callback<Open> isOpen);
 
     @GET("/api/categories")
     void getCategories(Callback<List<Category>> categories);

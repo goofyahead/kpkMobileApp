@@ -105,7 +105,9 @@ public class CheckoutActivity extends AppCompatActivity implements CartUpdated {
                     @Override
                     public void success(String s, Response response) {
                         Log.d(TAG, "OK: " + s);
-                        finish();
+                        Intent intent = new Intent(CheckoutActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                        startActivity(intent);
                     }
 
                     @Override

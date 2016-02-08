@@ -17,6 +17,7 @@ public class KpkLibPrefs {
     private static final String USER_FB_ID = "USER_FB_ID";
     private static final String USER_NAME = "USER_NAME";
     private static final String USER_EMAIL = "USER_EMAIL";
+    private static final String ORDERS_TO_PRINT = "ORDERSTOPRINT";
     private final SharedPreferences prefs;
 
     public KpkLibPrefs(Context context) {
@@ -28,14 +29,14 @@ public class KpkLibPrefs {
     }
 
     public void setLastUpdated(int timeStamp) {
-        prefs.edit().putInt(LAST_UPDATED, timeStamp).commit();
+        prefs.edit().putInt(LAST_UPDATED, timeStamp).apply();
     }
     public boolean isFirstTime() {
         return prefs.getBoolean(IS_FIRST_TIME, true);
     }
 
     public void setFirstTime(boolean first) {
-        prefs.edit().putBoolean(IS_FIRST_TIME, first).commit();
+        prefs.edit().putBoolean(IS_FIRST_TIME, first).apply();
     }
 
     public boolean isRegistered() {
@@ -43,7 +44,7 @@ public class KpkLibPrefs {
     }
 
     public void setRegistered(boolean status) {
-        prefs.edit().putBoolean(IS_REGISTERED, status).commit();
+        prefs.edit().putBoolean(IS_REGISTERED, status).apply();
     }
 
     public String getFbToken() {
@@ -51,11 +52,11 @@ public class KpkLibPrefs {
     }
 
     public void setFbToken(String secret) {
-        prefs.edit().putString(SECRET, secret).commit();
+        prefs.edit().putString(SECRET, secret).apply();
     }
 
     public void setRegistrationPushId(String regid) {
-        prefs.edit().putString(REGISTRATION_ID, regid).commit();
+        prefs.edit().putString(REGISTRATION_ID, regid).apply();
     }
 
     public String getRegistrationPushId() {
@@ -67,11 +68,11 @@ public class KpkLibPrefs {
     }
 
     public void setRegisteredVersion(int version) {
-        prefs.edit().putInt(REGISTERED_VERSION, version).commit();
+        prefs.edit().putInt(REGISTERED_VERSION, version).apply();
     }
 
     public void setUserFbId(String userFbId) {
-        prefs.edit().putString(USER_FB_ID, userFbId).commit();
+        prefs.edit().putString(USER_FB_ID, userFbId).apply();
     }
 
     public String getUserFbId() {
@@ -79,11 +80,11 @@ public class KpkLibPrefs {
     }
 
     public void setUserName(String userName) {
-        prefs.edit().putString(USER_NAME, userName).commit();
+        prefs.edit().putString(USER_NAME, userName).apply();
     }
 
     public void setUserEmail(String email) {
-        prefs.edit().putString(USER_EMAIL, email).commit();
+        prefs.edit().putString(USER_EMAIL, email).apply();
     }
 
     public String getUserName() {
@@ -92,5 +93,13 @@ public class KpkLibPrefs {
 
     public String getUserEmail() {
         return prefs.getString(USER_EMAIL, "");
+    }
+
+    public void setOrdersToPrint(String ordersToPrint) {
+        prefs.edit().putString(ORDERS_TO_PRINT, ordersToPrint).apply();
+    }
+
+    public String getOrdersToPrint () {
+        return prefs.getString(ORDERS_TO_PRINT, "");
     }
 }

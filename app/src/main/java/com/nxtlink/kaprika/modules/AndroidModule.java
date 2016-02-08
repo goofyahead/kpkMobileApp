@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.nxtlink.kaprika.activities.CheckoutActivity;
+import com.nxtlink.kaprika.activities.ClosedActivity;
 import com.nxtlink.kaprika.activities.MainActivity;
 import com.nxtlink.kaprika.activities.RegisterActivity;
 import com.nxtlink.kaprika.adapters.DishCursorAdapter;
@@ -49,7 +50,8 @@ import retrofit.RestAdapter;
         OrdersFragment.class,
         OrderListFragment.class,
         DishSearchFragment.class,
-        RegistrationIntentService.class
+        RegistrationIntentService.class,
+        ClosedActivity.class
 },
         library = true)
 public class AndroidModule {

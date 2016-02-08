@@ -1,22 +1,44 @@
 package kpklib.models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
  * Created by goofyahead on 10/1/15.
  */
-public class PrintableOrder {
-    private HashMap<String, CartItem> itemList;
+
+public class PrintableOrder implements Serializable{
+    private LinkedList<CartItem> itemList;
     private UserInfo address;
     private String timestamp;
     private String amount;
+    private String deliveryOption;
+    private String nonce;
 
-    public HashMap<String, CartItem> getItemList() {
+    public String getNonce() {
+        return nonce;
+    }
+
+    public PrintableOrder(){}
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public String getDeliveryOption() {
+        return deliveryOption;
+    }
+
+    public void setDeliveryOption(String deliveryOption) {
+        this.deliveryOption = deliveryOption;
+    }
+
+    public LinkedList<CartItem> getItemList() {
         return itemList;
     }
 
-    public void setItemList(HashMap<String, CartItem> itemList) {
+    public void setItemList(LinkedList<CartItem> itemList) {
         this.itemList = itemList;
     }
 

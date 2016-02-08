@@ -55,6 +55,7 @@ import kpklib.models.Cart;
 import kpklib.models.Category;
 import kpklib.models.Dish;
 import kpklib.models.MenuDrawerCategory;
+import kpklib.models.Open;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -107,6 +108,22 @@ public class MainActivity extends AppCompatActivity implements Callback<Integer>
 
         ButterKnife.inject(this);
         ((KaprikaApplication) getApplication()).inject(this);
+
+        api.isRestaurantOpen(new Callback<Open>() {
+            @Override
+            public void success(Open open, Response response) {
+                if (! open.isOpen()) {
+                    Intent closedRestaurant = new Intent(MainActivity.this, ClosedActivity.class);
+                    startActivity(closedRestaurant);
+                    finish();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, error.getMessage());
+            }
+        });
 
         currentCart = new Cart("", prefs.getUserFbId());
 

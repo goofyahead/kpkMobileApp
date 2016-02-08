@@ -29,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String PHONE_NUMBER = RegisterActivity.class.getName();
     private static final String TAG = RegisterActivity.class.getName();
+    public static final String PHONE = "GIVEN_PHONE";
 
     @InjectView(R.id.client_name)
     EditText clientName;
@@ -62,30 +63,34 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        phone.setText(getIntent().getStringExtra(PHONE_NUMBER));
+        Log.d(TAG, "given is " + getIntent().getStringExtra(PHONE));
+
+        phone.setText(getIntent().getStringExtra(PHONE));
 
         finishRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final UserInfo user = new UserInfo(clientName.getText().toString(), "",  email.getText().toString(), addressStreet.getText().toString(), addressFloor.getText().toString(),
-                        extraInfo.getText().toString(), postalCode.getText().toString(), phone.getText().toString(), "");
-                api.postUserInfo(user, new Callback<String>() {
-                    @Override
-                    public void success(String s, Response response) {
-                        Log.d(TAG, "success " + s);
-                        // load order with payload, finish this activity
-                        Intent selectItems = new Intent(RegisterActivity.this, OrderActivity.class);
-                        selectItems.putExtra(OrderActivity.USER_PAYLOAD, user);
-                        startActivity(selectItems);
-                        finish();
-                    }
+                if (fieldsAreCorrect()) {
+                    final UserInfo user = new UserInfo(clientName.getText().toString(), "", email.getText().toString(), addressStreet.getText().toString(), addressFloor.getText().toString(),
+                            extraInfo.getText().toString(), postalCode.getText().toString(), phone.getText().toString(), "");
+                    api.postUserInfo(user, new Callback<String>() {
+                        @Override
+                        public void success(String s, Response response) {
+                            Log.d(TAG, "success " + s);
+                            // load order with payload, finish this activity
+                            Intent selectItems = new Intent(RegisterActivity.this, OrderActivity.class);
+                            selectItems.putExtra(OrderActivity.USER_PAYLOAD, user);
+                            startActivity(selectItems);
+                            finish();
+                        }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.e(TAG, "error " + error.getMessage());
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.e(TAG, "error " + error.getMessage());
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
     }
@@ -96,17 +101,16 @@ public class RegisterActivity extends AppCompatActivity {
             addressStreet.setError(getString(R.string.error_street));
             return false;
         }
-        if (addressFloor.length() < 1) {
-            addressFloor.setError(getString(R.string.error_street));
-            return false;
-        }
         if (postalCode.length() < 5) {
             postalCode.setError(getString(R.string.postal_code_error));
             return false;
         }
-
         if (phone.length() < 9) {
             phone.setError(getString(R.string.error_phone));
+            return false;
+        }
+        if (clientName.length() < 2){
+            clientName.setError(getString(R.string.client_name_must_exist));
             return false;
         }
 

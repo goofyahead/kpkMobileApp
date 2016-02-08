@@ -39,4 +39,24 @@
         android:minEms="7"
         android:text="@string/continue_order" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <TextView
+            style="@style/header_2_neutral"
+            android:layout_above="@+id/latest_orders_print"
+            android:text="@string/print_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ListView
+            android:id="@+id/latest_orders_print"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp">
+
+        </ListView>
+
+    </RelativeLayout>
+
+
 </LinearLayout>

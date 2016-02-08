@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 /**
  * Created by goofyahead on 3/09/15.
@@ -12,7 +13,7 @@ import java.util.LinkedHashMap;
 public class Cart implements Serializable{
 
     private static final String TAG = Cart.class.getName();
-    private LinkedHashMap<String, CartItem> itemList;
+    private LinkedList<CartItem> itemList;
     private String nonce;
     private String fbId;
     private String deliveryOption;
@@ -33,7 +34,7 @@ public class Cart implements Serializable{
     }
 
     public Cart(String nonce, String fbId) {
-        this.itemList = new LinkedHashMap<>();
+        this.itemList = new LinkedList<>();
         this.fbId = fbId;
         this.nonce = nonce;
     }
@@ -63,19 +64,25 @@ public class Cart implements Serializable{
     }
 
     public void addItemToCart(Dish dishToAdd, int quantity, HashMap<String, String> options){
-        if (itemList.containsKey(dishToAdd.getId())){
-            Log.d(TAG, "Cart already contains dish augmenting qty");
-            CartItem current = itemList.get(dishToAdd.getId());
-            current.setQuantity(current.getQuantity() + quantity);
-            current.setOptions(options);
-        } else {
-            itemList.put(dishToAdd.getId(), new CartItem(dishToAdd, quantity, options));
+        String key = dishToAdd.getId();
+        for (String option : options.keySet()){
+            key = key + option + ":" + options.get(option).replace(" ", "");
         }
+
+//        if (itemList.containsKey(dishToAdd.getId())){
+//            Log.d(TAG, "Cart already contains dish augmenting qty");
+//            CartItem current = itemList.get(dishToAdd.getId());
+//            current.setQuantity(current.getQuantity() + quantity);
+//            current.setOptions(options);
+//        } else {
+            itemList.add(new CartItem(dishToAdd, quantity, options));
+//        }
+        Log.d(TAG, "checking key " + key);
     }
 
     public float getTotal (){
         float total = 0;
-        for (CartItem item : itemList.values()) {
+        for (CartItem item : itemList) {
             total = total + (item.getItem().getPrice() * item.getQuantity());
         }
         return total;
@@ -83,7 +90,7 @@ public class Cart implements Serializable{
 
     public int getItemsCount() {
         int total = 0;
-        for (CartItem item : itemList.values()) {
+        for (CartItem item : itemList) {
             total = total + item.getQuantity();
         }
         return total;
@@ -94,7 +101,7 @@ public class Cart implements Serializable{
     }
 
     public CartItem getItem(int position) {
-        return (CartItem) itemList.values().toArray()[position];
+        return (CartItem) itemList.toArray()[position];
     }
 
     public void deleteItem(int position) {
